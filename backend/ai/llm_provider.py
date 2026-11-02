@@ -33,7 +33,7 @@ class LLMProvider(ABC):
 class GroqProvider(LLMProvider):
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         self.api_key = api_key or settings.GROQ_API_KEY
-        self.model = model or settings.GROQ_MODEL or "llama-3.3-70b-versatile"
+        self.model = model or settings.GROQ_MODEL or "openai/gpt-oss-120b"
 
     async def generate_response(
         self,
@@ -58,12 +58,26 @@ class GroqProvider(LLMProvider):
             messages.extend(conversation_history)
         messages.append({"role": "user", "content": user_prompt})
 
-        response = await client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature
-        )
-        return response.choices[0].message.content or ""
+        max_tokens = kwargs.get("max_tokens", 4096)
+        try:
+            response = await client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            if "model_not_found" in str(e).lower() and self.model != "qwen/qwen3.8-27b":
+                logger.warning(f"Model {self.model} not found, retrying with qwen/qwen3.8-27b")
+                response = await client.chat.completions.create(
+                    model="qwen/qwen3.8-27b",
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+                return response.choices[0].message.content or ""
+            raise
 
     async def generate_json(
         self,
@@ -86,15 +100,34 @@ class GroqProvider(LLMProvider):
             system_prompt
             + "\n\nCRITICAL: Respond ONLY with a valid JSON object. Do not include markdown code block quotes."
         )
-        response = await client.chat.completions.create(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": system_with_json},
-                {"role": "user", "content": user_prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=temperature
-        )
+        max_tokens = kwargs.get("max_tokens", 4096)
+        try:
+            response = await client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": system_with_json},
+                    {"role": "user", "content": user_prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+        except Exception as e:
+            if "model_not_found" in str(e).lower() and self.model != "qwen/qwen3.8-27b":
+                logger.warning(f"Model {self.model} not found, retrying with qwen/qwen3.8-27b")
+                response = await client.chat.completions.create(
+                    model="qwen/qwen3.8-27b",
+                    messages=[
+                        {"role": "system", "content": system_with_json},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    response_format={"type": "json_object"},
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+            else:
+                raise
+
         raw = response.choices[0].message.content or "{}"
         try:
             return json.loads(raw)

@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     DEFAULT_LLM_PROVIDER: str = "groq"  # groq, openai, ollama, heuristic
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_MODEL: str = "openai/gpt-oss-120b"
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
     OLLAMA_BASE_URL: str = "http://localhost:11434"
