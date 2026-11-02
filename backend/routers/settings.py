@@ -39,6 +39,8 @@ async def get_settings(db: AsyncSession = Depends(get_db)):
             "app_name": settings.APP_NAME,
             "app_env": settings.APP_ENV,
             "default_provider": settings.DEFAULT_LLM_PROVIDER,
+            "groq_configured": bool(settings.GROQ_API_KEY),
+            "groq_model": settings.GROQ_MODEL,
             "openai_configured": bool(settings.OPENAI_API_KEY),
             "ollama_base_url": settings.OLLAMA_BASE_URL,
             "require_approval_email": settings.REQUIRE_APPROVAL_FOR_EMAIL,
@@ -64,6 +66,12 @@ async def update_settings(payload: SettingsUpdate, db: AsyncSession = Depends(ge
         # Update runtime settings
         if key == "llm_provider":
             settings.DEFAULT_LLM_PROVIDER = val
+        elif key == "groq_api_key" and "••" not in val:
+            settings.GROQ_API_KEY = val
+            if val.strip():
+                settings.DEFAULT_LLM_PROVIDER = "groq"
+        elif key == "groq_model":
+            settings.GROQ_MODEL = val
         elif key == "openai_api_key" and "••" not in val:
             settings.OPENAI_API_KEY = val
         elif key == "ollama_base_url":

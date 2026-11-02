@@ -30,6 +30,80 @@ class LLMProvider(ABC):
     ) -> Dict[str, Any]:
         pass
 
+class GroqProvider(LLMProvider):
+    def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
+        self.api_key = api_key or settings.GROQ_API_KEY
+        self.model = model or settings.GROQ_MODEL or "llama-3.3-70b-versatile"
+
+    async def generate_response(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        temperature: float = 0.7,
+        conversation_history: Optional[List[Dict[str, str]]] = None,
+        **kwargs
+    ) -> str:
+        if not self.api_key:
+            raise ValueError("Groq API key not configured")
+
+        try:
+            from groq import AsyncGroq
+            client = AsyncGroq(api_key=self.api_key)
+        except ImportError:
+            from openai import AsyncOpenAI
+            client = AsyncOpenAI(api_key=self.api_key, base_url="https://api.groq.com/openai/v1")
+
+        messages = [{"role": "system", "content": system_prompt}]
+        if conversation_history:
+            messages.extend(conversation_history)
+        messages.append({"role": "user", "content": user_prompt})
+
+        response = await client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=temperature
+        )
+        return response.choices[0].message.content or ""
+
+    async def generate_json(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        temperature: float = 0.2,
+        **kwargs
+    ) -> Dict[str, Any]:
+        if not self.api_key:
+            raise ValueError("Groq API key not configured")
+
+        try:
+            from groq import AsyncGroq
+            client = AsyncGroq(api_key=self.api_key)
+        except ImportError:
+            from openai import AsyncOpenAI
+            client = AsyncOpenAI(api_key=self.api_key, base_url="https://api.groq.com/openai/v1")
+
+        system_with_json = (
+            system_prompt
+            + "\n\nCRITICAL: Respond ONLY with a valid JSON object. Do not include markdown code block quotes."
+        )
+        response = await client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": system_with_json},
+                {"role": "user", "content": user_prompt}
+            ],
+            response_format={"type": "json_object"},
+            temperature=temperature
+        )
+        raw = response.choices[0].message.content or "{}"
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            match = re.search(r"\{.*\}", raw, re.DOTALL)
+            if match:
+                return json.loads(match.group(0))
+            raise
+
 class OpenAIProvider(LLMProvider):
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):
         self.api_key = api_key or settings.OPENAI_API_KEY
@@ -457,7 +531,13 @@ Assuming an initial capital allocation of ₹50,000 (or equivalent base unit):
 def get_llm_provider(provider_type: Optional[str] = None) -> LLMProvider:
     provider = (provider_type or settings.DEFAULT_LLM_PROVIDER).lower()
 
-    if provider == "openai":
+    if provider == "groq" or settings.GROQ_API_KEY:
+        if settings.GROQ_API_KEY:
+            return GroqProvider()
+        else:
+            logger.info("Groq API key missing, falling back to Autonomous Heuristic engine")
+            return AutonomousHeuristicProvider()
+    elif provider == "openai":
         if settings.OPENAI_API_KEY:
             return OpenAIProvider()
         else:
@@ -466,4 +546,8 @@ def get_llm_provider(provider_type: Optional[str] = None) -> LLMProvider:
     elif provider == "ollama":
         return OllamaProvider()
     else:
+        if settings.GROQ_API_KEY:
+            return GroqProvider()
+        if settings.OPENAI_API_KEY:
+            return OpenAIProvider()
         return AutonomousHeuristicProvider()

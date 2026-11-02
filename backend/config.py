@@ -21,7 +21,9 @@ class Settings(BaseSettings):
     SQLITE_SYNC_URL: str = DEFAULT_SYNC_DB_URL
     CHROMA_PERSIST_DIR: str = DEFAULT_CHROMA_DIR
 
-    DEFAULT_LLM_PROVIDER: str = "heuristic"  # openai, ollama, heuristic
+    DEFAULT_LLM_PROVIDER: str = "groq"  # groq, openai, ollama, heuristic
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
     OLLAMA_BASE_URL: str = "http://localhost:11434"

@@ -71,7 +71,9 @@ class AgentRegistry:
 
             # 3. Seed Default System Settings if not present
             default_settings = [
-                ("llm_provider", "heuristic", False),
+                ("llm_provider", "groq", False),
+                ("groq_model", "llama-3.3-70b-versatile", False),
+                ("groq_api_key", "", True),
                 ("openai_model", "gpt-4o-mini", False),
                 ("ollama_model", "llama3", False),
                 ("require_approval_email", "true", False),

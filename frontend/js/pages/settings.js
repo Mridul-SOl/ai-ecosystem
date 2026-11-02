@@ -23,28 +23,40 @@ export async function renderSettings(container) {
         <!-- Section 1: AI Provider -->
         <div class="workflow-card">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--accent);">
-            <i data-lucide="cpu" style="width:18px; height:18px;"></i>
-            <h3 style="font-size:15px; font-weight:600; color:#fff;">AI Inference Engine</h3>
+            <i data-lucide="zap" style="width:18px; height:18px; color:#f59e0b;"></i>
+            <h3 style="font-size:15px; font-weight:600; color:#fff;">AI Inference Engine (Groq / OpenAI / Ollama)</h3>
           </div>
           <div class="form-row" style="margin-bottom:14px;">
             <div class="form-group">
               <label>Default LLM Provider *</label>
               <select id="set-llm-provider">
-                <option value="heuristic">Autonomous Heuristic Engine (Offline / Zero-Key Fallback)</option>
+                <option value="groq" selected>Groq Cloud (Ultra-Fast Llama-3.3-70B, Mixtral) [Recommended]</option>
                 <option value="openai">OpenAI API (GPT-4o, GPT-4o-mini)</option>
                 <option value="ollama">Ollama (Local Private Models: Llama3, Mistral)</option>
+                <option value="heuristic">Autonomous Heuristic Engine (Offline / Zero-Key Fallback)</option>
               </select>
             </div>
             <div class="form-group">
-              <label>OpenAI Model</label>
+              <label>Groq Model</label>
+              <input type="text" id="set-groq-model" placeholder="llama-3.3-70b-versatile" value="llama-3.3-70b-versatile" />
+              <span class="form-hint">e.g. <code>llama-3.3-70b-versatile</code>, <code>llama-3.1-8b-instant</code></span>
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label>Groq API Key *</label>
+              <input type="password" id="set-groq-key" placeholder="gsk_..." />
+              <span class="form-hint">Stored securely on backend; never exposed to client browser.</span>
+            </div>
+            <div class="form-group">
+              <label>OpenAI Model (Alternative)</label>
               <input type="text" id="set-openai-model" placeholder="gpt-4o-mini" value="gpt-4o-mini" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>OpenAI API Key</label>
+              <label>OpenAI API Key (Alternative)</label>
               <input type="password" id="set-openai-key" placeholder="sk-..." />
-              <span class="form-hint">Stored securely on backend; never exposed to client browser.</span>
             </div>
             <div class="form-group">
               <label>Ollama Base URL</label>
@@ -149,6 +161,8 @@ export async function renderSettings(container) {
     e.preventDefault();
     const settingsPayload = {
       llm_provider: container.querySelector('#set-llm-provider').value,
+      groq_api_key: container.querySelector('#set-groq-key').value.trim(),
+      groq_model: container.querySelector('#set-groq-model').value.trim(),
       openai_model: container.querySelector('#set-openai-model').value.trim(),
       openai_api_key: container.querySelector('#set-openai-key').value.trim(),
       ollama_base_url: container.querySelector('#set-ollama-url').value.trim(),
@@ -182,6 +196,10 @@ async function loadSettings(container) {
     if (stored.llm_provider || runtime.default_provider) {
       container.querySelector('#set-llm-provider').value = stored.llm_provider || runtime.default_provider;
     }
+    if (stored.groq_model || runtime.groq_model) {
+      container.querySelector('#set-groq-model').value = stored.groq_model || runtime.groq_model;
+    }
+    if (stored.groq_api_key) container.querySelector('#set-groq-key').value = stored.groq_api_key;
     if (stored.openai_model) container.querySelector('#set-openai-model').value = stored.openai_model;
     if (stored.openai_api_key) container.querySelector('#set-openai-key').value = stored.openai_api_key;
     if (stored.ollama_base_url || runtime.ollama_base_url) {
