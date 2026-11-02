@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI ECOSYSTEM — Multi-Agent AI Business Operating System</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <!-- External Libraries (Lucide Icons, Chart.js, Marked) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div id="app" class="app-layout">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-logo">
+            <i data-lucide="cpu" class="icon-brand"></i>
+          </div>
+          <div class="brand-info">
+            <span class="brand-title">AI ECOSYSTEM</span>
+            <span class="brand-subtitle">Business OS v1.0</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">CORE SYSTEM</div>
+        <a href="#overview" class="nav-item active" data-page="overview">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Overview</span>
+        </a>
+        <a href="#chat" class="nav-item" data-page="chat">
+          <i data-lucide="bot"></i>
+          <span>CEO AI Chat</span>
+          <span class="nav-pill pulse">CEO</span>
+        </a>
+        <a href="#agents" class="nav-item" data-page="agents">
+          <i data-lucide="users-2"></i>
+          <span>AI Agents</span>
+          <span class="nav-badge" id="agents-count-badge">8</span>
+        </a>
+        <a href="#tasks" class="nav-item" data-page="tasks">
+          <i data-lucide="check-square"></i>
+          <span>Task Manager</span>
+          <span class="nav-badge pending" id="pending-tasks-badge">0</span>
+        </a>
+        <a href="#workflows" class="nav-item" data-page="workflows">
+          <i data-lucide="git-merge"></i>
+          <span>Workflows</span>
+          <span class="nav-badge active" id="active-workflows-badge">0</span>
+        </a>
+
+        <div class="nav-section-title">INTELLIGENCE & DATA</div>
+        <a href="#memory" class="nav-item" data-page="memory">
+          <i data-lucide="brain"></i>
+          <span>Memory & Vector</span>
+        </a>
+        <a href="#logs" class="nav-item" data-page="logs">
+          <i data-lucide="terminal"></i>
+          <span>Activity Logs</span>
+        </a>
+        <a href="#analytics" class="nav-item" data-page="analytics">
+          <i data-lucide="bar-chart-3"></i>
+          <span>Analytics</span>
+        </a>
+
+        <div class="nav-section-title">SYSTEM</div>
+        <a href="#settings" class="nav-item" data-page="settings">
+          <i data-lucide="sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-pill">
+          <span class="status-dot online"></span>
+          <span class="status-text" id="ws-status-text">Connected</span>
+        </div>
+        <div class="user-profile-preview">
+          <div class="user-avatar">
+            <span>EA</span>
+          </div>
+          <div class="user-details">
+            <span class="user-name">Executive Admin</span>
+            <span class="user-role">Super Admin</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace View -->
+    <div class="main-wrapper">
+      
+      <!-- Top Header Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="breadcrumbs">
+            <span class="bc-root">AI ECOSYSTEM</span>
+            <span class="bc-separator">/</span>
+            <span class="bc-current" id="page-title">Overview</span>
+          </div>
+        </div>
+
+        <div class="topbar-center">
+          <div class="global-search-bar">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="global-search-input" placeholder="Search tasks, agents, decisions, logs..." />
+            <span class="search-shortcut">⌘K</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn btn-secondary btn-sm" id="btn-quick-task" title="Create a standalone task">
+            <i data-lucide="plus"></i>
+            <span>New Task</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-quick-workflow" title="Launch CEO multi-agent workflow">
+            <i data-lucide="sparkles"></i>
+            <span>New Workflow</span>
+          </button>
+          <div class="topbar-divider"></div>
+          <button class="icon-btn" id="btn-refresh-data" title="Refresh data">
+            <i data-lucide="rotate-cw"></i>
+          </button>
+          <button class="icon-btn" id="btn-open-terminal" title="Live Event Feed">
+            <i data-lucide="activity"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Pages Container -->
+      <main class="page-content" id="page-container">
+        <!-- Rendered via JavaScript modules -->
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Direct Agent Interaction Drawer -->
+  <div class="drawer-overlay" id="agent-drawer-overlay"></div>
+  <aside class="side-drawer" id="agent-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <div class="agent-avatar-circle" id="drawer-agent-avatar">
+          <i data-lucide="bot"></i>
+        </div>
+        <div>
+          <h3 id="drawer-agent-name">Agent Name</h3>
+          <span class="drawer-agent-role" id="drawer-agent-role">Department Role</span>
+        </div>
+      </div>
+      <button class="icon-btn close-btn" id="btn-close-drawer">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" data-tab="chat">Direct Dialogue</button>
+      <button class="drawer-tab" data-tab="info">System Info & Tools</button>
+      <button class="drawer-tab" data-tab="history">Execution History</button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Tab 1: Direct Dialogue -->
+      <div class="drawer-tab-content active" id="drawer-tab-chat">
+        <div class="drawer-messages" id="drawer-messages-list">
+          <!-- Messages inserted dynamically -->
+        </div>
+        <div class="drawer-input-area">
+          <textarea id="drawer-chat-input" placeholder="Give direct instruction or query this agent..." rows="2"></textarea>
+          <button class="btn btn-primary btn-sm" id="btn-drawer-send">
+            <i data-lucide="send"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Info & Tools -->
+      <div class="drawer-tab-content" id="drawer-tab-info">
+        <div class="info-section">
+          <h4>Agent Identity & Prompt</h4>
+          <p id="drawer-agent-desc" class="info-desc"></p>
+          <pre id="drawer-agent-prompt" class="code-block-small"></pre>
+        </div>
+        <div class="info-section">
+          <h4>Department Capabilities</h4>
+          <ul id="drawer-agent-caps" class="caps-list"></ul>
+        </div>
+      </div>
+
+      <!-- Tab 3: History -->
+      <div class="drawer-tab-content" id="drawer-tab-history">
+        <div id="drawer-tasks-history" class="tasks-mini-list"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Create Task Dialog Modal -->
+  <dialog class="modal-dialog" id="modal-create-task" closedby="any">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="plus-circle" class="modal-icon"></i>
+          <h3>Create Operational Task</h3>
+        </div>
+        <button class="icon-btn" id="btn-close-task-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <form id="form-create-task" class="modal-form">
+        <div class="form-group">
+          <label for="task-title-input">Task Title *</label>
+          <input type="text" id="task-title-input" required placeholder="e.g., Audit competitor ad spend across Meta & TikTok" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-agent-select">Assign Department Agent *</label>
+            <select id="task-agent-select" required>
+              <option value="research">Athena — Research & Market Intel</option>
+              <option value="marketing">Chloe — Marketing & Growth</option>
+              <option value="finance">Sterling — Finance & Budgeting</option>
+              <option value="operations">Atlas — Operations & Logistics</option>
+              <option value="security">Vigil — Security & Risk Audit</option>
+              <option value="infrastructure">Forge — DevOps & Cloud Platform</option>
+              <option value="hr">Marcus — HR & People Strategy</option>
+              <option value="ceo">Nova — CEO Executive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="task-priority-select">Priority</label>
+            <select id="task-priority-select">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="task-desc-input">Detailed Instructions *</label>
+          <textarea id="task-desc-input" rows="4" required placeholder="Specify goals, parameters, constraints, and deliverable format..."></textarea>
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="task-approval-checkbox" />
+            <span>Require Human-In-The-Loop Approval before execution</span>
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-task-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-task">
+            <i data-lucide="check"></i>
+            <span>Create & Dispatch</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Create Workflow Dialog Modal -->
+  <dialog class="modal-dialog" id="modal-create-workflow" closedby="any">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="sparkles" class="modal-icon text-accent"></i>
+          <h3>Orchestrate Multi-Agent Workflow</h3>
+        </div>
+        <button class="icon-btn" id="btn-close-workflow-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <form id="form-create-workflow" class="modal-form">
+        <div class="form-group">
+          <label for="workflow-objective-input">Corporate Objective *</label>
+          <textarea id="workflow-objective-input" rows="4" required placeholder="Describe your corporate goal in natural language...&#10;e.g. 'Create a comprehensive marketing strategy for a new clothing brand with a budget of ₹50,000.'"></textarea>
+          <span class="form-hint">The CEO Orchestrator will decompose this into subtasks, assign them to Research, Marketing, Finance, and review all outputs before delivering an executive synthesis.</span>
+        </div>
+        <div class="sample-prompts">
+          <span class="sample-label">Try quick samples:</span>
+          <button type="button" class="prompt-chip" data-prompt="Create a marketing strategy for a new clothing brand with a budget of ₹50,000.">
+            Clothing Brand (₹50k Budget)
+          </button>
+          <button type="button" class="prompt-chip" data-prompt="Design an enterprise SaaS product launch roadmap with security compliance and cloud infrastructure specs.">
+            Enterprise SaaS Launch
+          </button>
+          <button type="button" class="prompt-chip" data-prompt="Plan a regional expansion strategy for a quick-commerce grocery delivery service.">
+            Quick-Commerce Expansion
+          </button>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-workflow-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-workflow">
+            <i data-lucide="play"></i>
+            <span>Launch CEO Orchestration</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Task Detail Modal -->
+  <dialog class="modal-dialog modal-lg" id="modal-task-detail" closedby="any">
+    <div class="modal-card" id="task-detail-content">
+      <!-- Injected dynamically -->
+    </div>
+  </dialog>
+
+  <!-- Live Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Main JavaScript Application Modules -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

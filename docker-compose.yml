@@ -1,0 +1,47 @@
+services:
+  ai-ecosystem:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_ecosystem_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - DEBUG=false
+      - DATABASE_URL=sqlite+aiosqlite:///./data/ai_ecosystem.db
+      - SQLITE_SYNC_URL=sqlite:///./data/ai_ecosystem.db
+      - CHROMA_PERSIST_DIR=./data/chroma
+      - DEFAULT_LLM_PROVIDER=heuristic
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - REQUIRE_APPROVAL_FOR_EMAIL=true
+      - REQUIRE_APPROVAL_FOR_GITHUB=true
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional Local Ollama Service
+  # Uncomment if you wish to run local offline LLMs directly in docker
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ai_ecosystem_ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_models:/root/.ollama
+
+# volumes:
+#   ollama_models:
