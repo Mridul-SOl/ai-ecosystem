@@ -13,6 +13,12 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class SupabaseSyncRequest(BaseModel):
+    id: str
+    email: EmailStr
+    username: Optional[str] = None
+    role: Optional[str] = "member"
+
 class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

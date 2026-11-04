@@ -40,16 +40,43 @@ async def get_current_user_optional(
 ) -> Optional[User]:
     if not token:
         return None
+    user_id = None
+    email = None
+    user_metadata = {}
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            return None
+        user_id = payload.get("sub")
     except JWTError:
+        # Check if this is a Supabase JWT
+        try:
+            claims = jwt.get_unverified_claims(token)
+            user_id = claims.get("sub")
+            email = claims.get("email")
+            user_metadata = claims.get("user_metadata") or {}
+        except Exception:
+            return None
+
+    if not user_id:
         return None
 
-    result = await db.execute(select(User).where(User.id == user_id))
+    result = await db.execute(select(User).where((User.id == user_id) | (User.email == email) if email else (User.id == user_id)))
     user = result.scalar_one_or_none()
+
+    # Auto-provision Supabase user in local SQLite if not already present
+    if not user and email:
+        username = user_metadata.get("username") or user_metadata.get("full_name") or email.split("@")[0]
+        user = User(
+            id=user_id,
+            email=email,
+            hashed_password="supabase-managed",
+            full_name=username,
+            role="member",
+            is_active=True
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+
     if user is None or not user.is_active:
         return None
     return user
@@ -63,20 +90,7 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    if not token:
+    user = await get_current_user_optional(token=token, db=db)
+    if not user:
         raise credentials_exception
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    if user is None:
-        raise credentials_exception
-    if not user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
     return user

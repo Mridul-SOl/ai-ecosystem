@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 
 from backend.database import get_db
 from backend.models import User
-from backend.schemas import UserRegister, UserLogin, UserResponse, Token
+from backend.schemas import UserRegister, UserLogin, UserResponse, Token, SupabaseSyncRequest
 from backend.auth import (
     verify_password,
     get_password_hash,
@@ -92,3 +92,41 @@ async def login_oauth(form_data: OAuth2PasswordRequestForm = Depends(), db: Asyn
 @router.get("/me", response_model=UserResponse)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.post("/supabase-sync", response_model=Token)
+async def supabase_sync(
+    payload: SupabaseSyncRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    result = await db.execute(select(User).where((User.id == payload.id) | (User.email == payload.email)))
+    user = result.scalar_one_or_none()
+
+    if not user:
+        user = User(
+            id=payload.id,
+            email=payload.email,
+            full_name=payload.username or payload.email.split("@")[0].capitalize(),
+            hashed_password="supabase-managed",
+            role=payload.role or "member",
+            is_active=True
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+        await log_activity(
+            action="USER_REGISTERED_SUPABASE",
+            message=f"User {user.email} synchronized from Supabase.",
+            level="INFO"
+        )
+    else:
+        if payload.username and user.full_name != payload.username:
+            user.full_name = payload.username
+            await db.commit()
+            await db.refresh(user)
+
+    access_token = create_access_token(data={"sub": user.id, "email": user.email, "role": user.role})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": user
+    }

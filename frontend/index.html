@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,13 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- CSS Stylesheet -->
+  <!-- CSS Stylesheet (Empty Premium Light Theme) -->
   <link rel="stylesheet" href="/css/styles.css">
   
-  <!-- External Libraries (Lucide Icons, Chart.js, Marked) -->
+  <!-- External Libraries (Supabase, Lucide Icons, Chart.js, Marked) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -131,11 +132,27 @@
             <span>New Workflow</span>
           </button>
           <div class="topbar-divider"></div>
+          
+          <!-- Supabase Auth / User Badge -->
+          <div class="topbar-auth-section" id="topbar-auth-section">
+            <button class="btn btn-secondary btn-sm" id="btn-open-auth">
+              <i data-lucide="log-in"></i>
+              <span>Sign In</span>
+            </button>
+            <div class="user-pill" id="topbar-user-pill" style="display:none;">
+              <div class="user-pill-avatar" id="topbar-user-avatar">U</div>
+              <div class="user-pill-info">
+                <span class="user-pill-name" id="topbar-user-name">User</span>
+                <span class="user-pill-tag">Online</span>
+              </div>
+              <button class="icon-btn btn-xs" id="btn-topbar-logout" title="Sign Out">
+                <i data-lucide="log-out"></i>
+              </button>
+            </div>
+          </div>
+
           <button class="icon-btn" id="btn-refresh-data" title="Refresh data">
             <i data-lucide="rotate-cw"></i>
-          </button>
-          <button class="icon-btn" id="btn-open-terminal" title="Live Event Feed">
-            <i data-lucide="activity"></i>
           </button>
         </div>
       </header>
@@ -309,10 +326,57 @@
     </div>
   </dialog>
 
-  <!-- Task Detail Modal -->
-  <dialog class="modal-dialog modal-lg" id="modal-task-detail" closedby="any">
-    <div class="modal-card" id="task-detail-content">
-      <!-- Injected dynamically -->
+  <!-- Supabase Auth Modal Dialog -->
+  <dialog class="modal-dialog" id="modal-auth" closedby="any">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="auth-brand-icon">
+            <i data-lucide="shield-check"></i>
+          </div>
+          <div>
+            <h3 id="auth-modal-title">Sign In</h3>
+            <p class="auth-subtitle">AI ECOSYSTEM Authorization & Session</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-close-auth-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-auth-signin" type="button">Sign In</button>
+        <button class="auth-tab" id="tab-auth-signup" type="button">Create Account</button>
+      </div>
+
+      <form id="form-auth" class="modal-form">
+        <div class="form-group" id="group-auth-username" style="display:none;">
+          <label for="auth-username">Username *</label>
+          <input type="text" id="auth-username" placeholder="e.g. alex.chen" autocomplete="username" />
+        </div>
+
+        <div class="form-group">
+          <label for="auth-email">Email Address *</label>
+          <input type="email" id="auth-email" required placeholder="name@company.com" autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password">Password *</label>
+          <input type="password" id="auth-password" required minlength="6" placeholder="••••••••" autocomplete="current-password" />
+          <span class="form-hint" id="auth-hint">Instant authorization without email confirmation barrier.</span>
+        </div>
+
+        <div id="auth-alert" class="auth-alert" style="display:none;"></div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-auth">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-auth">
+            <i data-lucide="arrow-right"></i>
+            <span id="btn-auth-label">Sign In</span>
+          </button>
+        </div>
+      </form>
     </div>
   </dialog>
 

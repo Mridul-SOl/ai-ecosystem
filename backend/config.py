@@ -41,6 +41,12 @@ class Settings(BaseSettings):
     REQUIRE_APPROVAL_FOR_GITHUB: bool = True
     REQUIRE_APPROVAL_FOR_SCRAPING: bool = False
 
+    # Supabase Auth Integration
+    SUPABASE_URL: str = "https://ydrwdyerkikqxtdlmytc.supabase.co"
+    SUPABASE_KEY: str = "sb_publishable_wtRPHFAEgVlge9YXv8GbZA_OY_w6L5C"
+    NEXT_PUBLIC_SUPABASE_URL: str = "https://ydrwdyerkikqxtdlmytc.supabase.co"
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: str = "sb_publishable_wtRPHFAEgVlge9YXv8GbZA_OY_w6L5C"
+
     ALLOWED_ORIGINS: List[str] = ["*"]
 
 settings = Settings()

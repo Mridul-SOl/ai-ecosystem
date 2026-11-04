@@ -2,6 +2,7 @@
 
 import { api } from './api.js';
 import { realtime } from './websocket.js';
+import { authService } from './supabase.js';
 
 // Page modules
 import { renderOverview } from './pages/overview.js';
@@ -40,7 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 2. Setup Route Listener
   window.addEventListener('hashchange', handleNavigation);
 
-  // 3. Setup Modals and Global UI Elements
+  // 3. Setup Modals, Auth, and Global UI Elements
+  initAuthUI();
   initModals();
   initAgentDrawer();
   initGlobalSearch();
@@ -381,6 +383,128 @@ function initGlobalSearch() {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
       searchInput?.focus();
+    }
+  });
+}
+
+// ==========================================
+// Supabase Authentication UI Integration
+// ==========================================
+function initAuthUI() {
+  const btnOpenAuth = document.getElementById('btn-open-auth');
+  const modalAuth = document.getElementById('modal-auth');
+  const btnCloseAuth = document.getElementById('btn-close-auth-modal');
+  const btnCancelAuth = document.getElementById('btn-cancel-auth');
+  const formAuth = document.getElementById('form-auth');
+  const tabSignIn = document.getElementById('tab-auth-signin');
+  const tabSignUp = document.getElementById('tab-auth-signup');
+  const authTitle = document.getElementById('auth-modal-title');
+  const btnAuthLabel = document.getElementById('btn-auth-label');
+  const groupUsername = document.getElementById('group-auth-username');
+  const authAlert = document.getElementById('auth-alert');
+  const topbarUserPill = document.getElementById('topbar-user-pill');
+  const topbarUserName = document.getElementById('topbar-user-name');
+  const topbarUserAvatar = document.getElementById('topbar-user-avatar');
+  const btnLogout = document.getElementById('btn-topbar-logout');
+  const sidebarUserName = document.querySelector('.sidebar-footer .user-name');
+  const sidebarUserAvatar = document.querySelector('.sidebar-footer .user-avatar span');
+
+  let mode = 'signin'; // 'signin' | 'signup'
+
+  function updateUIForUser(user) {
+    if (user) {
+      if (btnOpenAuth) btnOpenAuth.style.display = 'none';
+      if (topbarUserPill) topbarUserPill.style.display = 'flex';
+      
+      const displayName = user.full_name || (user.email ? user.email.split('@')[0] : 'Operator');
+      const initials = displayName.slice(0, 2).toUpperCase();
+
+      if (topbarUserName) topbarUserName.textContent = displayName;
+      if (topbarUserAvatar) topbarUserAvatar.textContent = initials;
+      if (sidebarUserName) sidebarUserName.textContent = displayName;
+      if (sidebarUserAvatar) sidebarUserAvatar.textContent = initials;
+    } else {
+      if (btnOpenAuth) btnOpenAuth.style.display = 'inline-flex';
+      if (topbarUserPill) topbarUserPill.style.display = 'none';
+      if (sidebarUserName) sidebarUserName.textContent = 'Guest Operator';
+      if (sidebarUserAvatar) sidebarUserAvatar.textContent = 'GO';
+    }
+  }
+
+  // Initialize Supabase auth service listener
+  authService.init((user) => {
+    updateUIForUser(user);
+  });
+
+  // Check cached user
+  const initialUser = authService.getCurrentUser();
+  updateUIForUser(initialUser);
+
+  // Tab toggling
+  tabSignIn?.addEventListener('click', () => {
+    mode = 'signin';
+    tabSignIn.classList.add('active');
+    tabSignUp.classList.remove('active');
+    if (authTitle) authTitle.textContent = 'Sign In';
+    if (btnAuthLabel) btnAuthLabel.textContent = 'Sign In';
+    if (groupUsername) groupUsername.style.display = 'none';
+    if (authAlert) authAlert.style.display = 'none';
+  });
+
+  tabSignUp?.addEventListener('click', () => {
+    mode = 'signup';
+    tabSignUp.classList.add('active');
+    tabSignIn.classList.remove('active');
+    if (authTitle) authTitle.textContent = 'Create Account';
+    if (btnAuthLabel) btnAuthLabel.textContent = 'Create Account';
+    if (groupUsername) groupUsername.style.display = 'flex';
+    if (authAlert) authAlert.style.display = 'none';
+  });
+
+  btnOpenAuth?.addEventListener('click', () => {
+    if (authAlert) authAlert.style.display = 'none';
+    modalAuth?.showModal();
+  });
+
+  btnCloseAuth?.addEventListener('click', () => modalAuth?.close());
+  btnCancelAuth?.addEventListener('click', () => modalAuth?.close());
+
+  btnLogout?.addEventListener('click', async () => {
+    await authService.signOut();
+    updateUIForUser(null);
+    realtime.showToast('Session Terminated', 'You have been successfully signed out.', 'info');
+  });
+
+  formAuth?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const username = document.getElementById('auth-username')?.value.trim();
+
+    if (authAlert) authAlert.style.display = 'none';
+    const submitBtn = document.getElementById('btn-submit-auth');
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      let result;
+      if (mode === 'signup') {
+        result = await authService.signUp(username, email, password);
+        realtime.showToast('Account Created', `Welcome to AI ECOSYSTEM, ${result.user?.full_name || username}!`, 'success');
+      } else {
+        result = await authService.signIn(email, password);
+        realtime.showToast('Authorized', `Welcome back, ${result.user?.full_name || email}!`, 'success');
+      }
+      modalAuth?.close();
+      formAuth.reset();
+      updateUIForUser(result.user);
+    } catch (err) {
+      if (authAlert) {
+        authAlert.style.display = 'block';
+        authAlert.className = 'auth-alert error';
+        authAlert.textContent = err.message || 'Authentication error. Please check credentials.';
+      }
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 }
