@@ -69,15 +69,28 @@ class GroqProvider(LLMProvider):
             return response.choices[0].message.content or ""
         except Exception as e:
             if "model_not_found" in str(e).lower() and self.model != "qwen/qwen3.8-27b":
-                logger.warning(f"Model {self.model} not found, retrying with qwen/qwen3.8-27b")
-                response = await client.chat.completions.create(
-                    model="qwen/qwen3.8-27b",
-                    messages=messages,
-                    temperature=temperature,
-                    max_tokens=max_tokens
-                )
-                return response.choices[0].message.content or ""
-            raise
+                try:
+                    logger.warning(f"Model {self.model} not found, retrying with qwen/qwen3.8-27b")
+                    response = await client.chat.completions.create(
+                        model="qwen/qwen3.8-27b",
+                        messages=messages,
+                        temperature=temperature,
+                        max_tokens=max_tokens
+                    )
+                    return response.choices[0].message.content or ""
+                except Exception as inner_e:
+                    logger.warning("Groq retry failed (%s). Falling back to AutonomousHeuristicProvider.", inner_e)
+            else:
+                logger.warning("Groq generation failed (%s). Falling back to AutonomousHeuristicProvider.", e)
+
+            heuristic = AutonomousHeuristicProvider()
+            return await heuristic.generate_response(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                temperature=temperature,
+                conversation_history=conversation_history,
+                **kwargs
+            )
 
     async def generate_json(
         self,
@@ -87,7 +100,8 @@ class GroqProvider(LLMProvider):
         **kwargs
     ) -> Dict[str, Any]:
         if not self.api_key:
-            raise ValueError("Groq API key not configured")
+            heuristic = AutonomousHeuristicProvider()
+            return await heuristic.generate_json(system_prompt, user_prompt, temperature, **kwargs)
 
         try:
             from groq import AsyncGroq
@@ -112,30 +126,37 @@ class GroqProvider(LLMProvider):
                 temperature=temperature,
                 max_tokens=max_tokens
             )
+            raw = response.choices[0].message.content or "{}"
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError:
+                match = re.search(r"\{.*\}", raw, re.DOTALL)
+                if match:
+                    return json.loads(match.group(0))
+                raise
         except Exception as e:
             if "model_not_found" in str(e).lower() and self.model != "qwen/qwen3.8-27b":
-                logger.warning(f"Model {self.model} not found, retrying with qwen/qwen3.8-27b")
-                response = await client.chat.completions.create(
-                    model="qwen/qwen3.8-27b",
-                    messages=[
-                        {"role": "system", "content": system_with_json},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    response_format={"type": "json_object"},
-                    temperature=temperature,
-                    max_tokens=max_tokens
-                )
+                try:
+                    logger.warning(f"Model {self.model} not found, retrying JSON with qwen/qwen3.8-27b")
+                    response = await client.chat.completions.create(
+                        model="qwen/qwen3.8-27b",
+                        messages=[
+                            {"role": "system", "content": system_with_json},
+                            {"role": "user", "content": user_prompt}
+                        ],
+                        response_format={"type": "json_object"},
+                        temperature=temperature,
+                        max_tokens=max_tokens
+                    )
+                    raw = response.choices[0].message.content or "{}"
+                    return json.loads(raw)
+                except Exception as inner_e:
+                    logger.warning("Groq JSON retry failed (%s). Falling back to AutonomousHeuristicProvider.", inner_e)
             else:
-                raise
+                logger.warning("Groq JSON generation failed (%s). Falling back to AutonomousHeuristicProvider.", e)
 
-        raw = response.choices[0].message.content or "{}"
-        try:
-            return json.loads(raw)
-        except json.JSONDecodeError:
-            match = re.search(r"\{.*\}", raw, re.DOTALL)
-            if match:
-                return json.loads(match.group(0))
-            raise
+            heuristic = AutonomousHeuristicProvider()
+            return await heuristic.generate_json(system_prompt, user_prompt, temperature, **kwargs)
 
 class OpenAIProvider(LLMProvider):
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None):

@@ -147,7 +147,11 @@ Output a JSON object with:
         upstream_outputs: Dict[str, str] = {}
 
         try:
-            while True:
+            cycle_count = 0
+            MAX_CYCLES = 60
+
+            while cycle_count < MAX_CYCLES:
+                cycle_count += 1
                 # Fetch next runnable task
                 async with AsyncSessionLocal() as session:
                     res = await session.execute(
@@ -157,36 +161,63 @@ Output a JSON object with:
                     )
                     all_tasks = res.scalars().all()
 
-                    # Find tasks that are Pending
+                    # Categorize task statuses
                     pending_tasks = [t for t in all_tasks if t.status == "Pending"]
                     running_tasks = [t for t in all_tasks if t.status == "Running"]
                     awaiting_appr = [t for t in all_tasks if t.status == "Awaiting Approval"]
-                    failed_tasks = [t for t in all_tasks if t.status == "Failed"]
 
                     if awaiting_appr:
                         logger.info("Workflow %s paused waiting for user approval on task %s", workflow_id, awaiting_appr[0].id)
                         return
 
                     if not pending_tasks and not running_tasks:
-                        # All tasks complete or failed!
+                        # All tasks complete or terminal
                         break
 
-                    # Check next pending task
-                    next_task = pending_tasks[0]
-                    deps = next_task.input_data.get("dependencies", [])
-                    
-                    # Verify dependencies
-                    deps_satisfied = True
-                    for dep in deps:
-                        dep_task = next((t for t in all_tasks if t.assigned_agent_id == dep), None)
-                        if dep_task and dep_task.status != "Completed":
-                            deps_satisfied = False
+                    # Check if any pending tasks depend on a failed/cancelled task
+                    tasks_cancelled = False
+                    for p_task in pending_tasks:
+                        deps = p_task.input_data.get("dependencies", [])
+                        for dep in deps:
+                            dep_task = next((t for t in all_tasks if t.assigned_agent_id == dep), None)
+                            if dep_task and dep_task.status in ("Failed", "Cancelled"):
+                                p_task.status = "Cancelled"
+                                session.add(TaskHistory(
+                                    task_id=p_task.id,
+                                    agent_id=p_task.assigned_agent_id,
+                                    state_from="Pending",
+                                    state_to="Cancelled",
+                                    notes=f"Cancelled: Upstream dependency '{dep_task.title}' was {dep_task.status}."
+                                ))
+                                tasks_cancelled = True
+                                break
+
+                    if tasks_cancelled:
+                        await session.commit()
+                        continue
+
+                    # Find the first pending task whose dependencies are all Completed
+                    next_task = None
+                    for p_task in pending_tasks:
+                        deps = p_task.input_data.get("dependencies", [])
+                        deps_satisfied = True
+                        for dep in deps:
+                            dep_task = next((t for t in all_tasks if t.assigned_agent_id == dep), None)
+                            if dep_task and dep_task.status != "Completed":
+                                deps_satisfied = False
+                                break
+                        if deps_satisfied:
+                            next_task = p_task
                             break
 
-                    if not deps_satisfied:
-                        logger.warning("Dependencies not yet satisfied for task %s", next_task.id)
-                        await asyncio.sleep(1)
-                        continue
+                    if not next_task:
+                        if running_tasks:
+                            logger.info("Waiting for %d running task(s) in workflow %s", len(running_tasks), workflow_id)
+                            await asyncio.sleep(1)
+                            continue
+                        else:
+                            logger.warning("No runnable tasks and no active running tasks in workflow %s. Concluding execution.", workflow_id)
+                            break
 
                     # If requires approval and not yet approved
                     if next_task.requires_approval and not next_task.is_approved:

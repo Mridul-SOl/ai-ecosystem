@@ -229,5 +229,11 @@ export const authService = {
     } catch (_) {
       return null;
     }
+  },
+
+  isAuthenticated() {
+    const token = localStorage.getItem('access_token');
+    const user = this.getCurrentUser();
+    return !!(token && user);
   }
 };

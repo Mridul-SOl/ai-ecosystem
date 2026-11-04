@@ -20,7 +20,125 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-  <div id="app" class="app-layout">
+  <!-- ==========================================
+       Unauthenticated Landing & Authentication Gate
+       No Dashboard Access Without Login
+       ========================================== -->
+  <div id="landing-portal" class="landing-portal">
+    <!-- Landing Header -->
+    <header class="landing-nav">
+      <div class="landing-brand">
+        <div class="brand-logo">
+          <i data-lucide="cpu" class="icon-brand"></i>
+        </div>
+        <div class="brand-info">
+          <span class="brand-title">AI ECOSYSTEM</span>
+          <span class="brand-subtitle">Enterprise OS v1.0</span>
+        </div>
+      </div>
+      <div class="landing-nav-actions">
+        <div class="system-status-pill" style="margin-right: 12px;">
+          <span class="status-dot online"></span>
+          <span class="status-text">Autonomous Fleet Ready</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="landing-nav-login-btn">
+          <i data-lucide="log-in"></i>
+          <span>Account Login</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Landing Main Content -->
+    <main class="landing-content">
+      <div class="landing-hero-section">
+        <div class="landing-chip">
+          <span class="telemetry-radar-beacon" style="display:inline-block; width:8px; height:8px; margin-right:6px;"></span>
+          <span>AUTONOMOUS MULTI-AGENT ENTERPRISE ARCHITECTURE</span>
+        </div>
+        <h1 class="landing-title">The Complete AI Business Operating System</h1>
+        <p class="landing-subtitle">
+          Operate a virtual company powered by 8 specialized AI agents coordinated by CEO Nova.
+          Instant sign-in and authorization — zero email confirmation barrier.
+        </p>
+      </div>
+
+      <!-- Embedded Auth Card -->
+      <div class="landing-auth-wrapper">
+        <div class="landing-auth-card">
+          <div class="landing-auth-header">
+            <div class="auth-tabs" style="margin-bottom:0;">
+              <button class="auth-tab active" id="landing-tab-signin" type="button">Sign In</button>
+              <button class="auth-tab" id="landing-tab-signup" type="button">Create Account</button>
+            </div>
+          </div>
+
+          <form id="form-landing-auth" class="modal-form" style="padding-top:20px;">
+            <div class="form-group" id="group-landing-username" style="display:none;">
+              <label for="landing-username">Username *</label>
+              <input type="text" id="landing-username" placeholder="e.g. executive.alex" autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+              <label for="landing-email">Email Address *</label>
+              <input type="email" id="landing-email" required placeholder="name@company.com" autocomplete="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="landing-password">Password *</label>
+              <input type="password" id="landing-password" required minlength="6" placeholder="••••••••" autocomplete="current-password" />
+              <span class="form-hint">
+                <i data-lucide="check" style="width:12px; height:12px; vertical-align:middle; color:#059669;"></i>
+                Instant authorization without email confirmation barrier.
+              </span>
+            </div>
+
+            <div id="landing-auth-alert" class="auth-alert" style="display:none;"></div>
+
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-landing-submit" style="width:100%; margin-top:16px;">
+              <span id="landing-btn-label">Sign In & Launch Workspace</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Features Showcase Grid -->
+      <div class="landing-features-grid">
+        <div class="landing-feature-card">
+          <div class="feature-icon-wrap"><i data-lucide="crown"></i></div>
+          <h3>CEO Nova Orchestrator</h3>
+          <p>Translates high-level natural language instructions into structured multi-agent subtask DAGs, critiques department outputs, and synthesizes executive decisions.</p>
+        </div>
+
+        <div class="landing-feature-card">
+          <div class="feature-icon-wrap"><i data-lucide="users"></i></div>
+          <h3>8 Autonomous Departments</h3>
+          <p>Dedicated specialist agents across Marketing, Finance, HR, Operations, Market Research, Cyber Security, and Cloud Infrastructure with isolated capabilities.</p>
+        </div>
+
+        <div class="landing-feature-card">
+          <div class="feature-icon-wrap"><i data-lucide="activity"></i></div>
+          <h3>High-Tech Telemetry HUD</h3>
+          <p>Live millisecond progress tracking, Groq LPU 120B neural inference engine, real-time status telemetry, and human-in-the-loop security authorization.</p>
+        </div>
+
+        <div class="landing-feature-card">
+          <div class="feature-icon-wrap"><i data-lucide="database"></i></div>
+          <h3>Dual-Layer Memory</h3>
+          <p>SQLite relational storage for transactional records paired with semantic vector embeddings for cross-department organizational recall.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Landing Footer -->
+    <footer class="landing-footer">
+      <span>AI ECOSYSTEM &copy; 2026 — Multi-Agent Enterprise Business Operating System</span>
+      <span class="landing-footer-tag">Production Ready • Supabase Auth • Groq LPU Powered</span>
+    </footer>
+  </div>
+
+  <!-- Main Authenticated Workspace Layout (Hidden until logged in) -->
+  <div id="app" class="app-layout" style="display:none;">
     
     <!-- Left Navigation Sidebar -->
     <aside class="sidebar">

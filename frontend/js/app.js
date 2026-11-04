@@ -78,9 +78,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ==========================================
-// Navigation & Routing
+// Navigation & Routing with Strict Auth Gate
 // ==========================================
 function handleNavigation() {
+  const landingPortal = document.getElementById('landing-portal');
+  const appLayout = document.getElementById('app');
+
+  // Strict Authentication Gate:
+  // No dashboard access is given to any user without logging in
+  if (!authService.isAuthenticated()) {
+    if (landingPortal) landingPortal.style.display = 'block';
+    if (appLayout) appLayout.style.display = 'none';
+    if (window.lucide && landingPortal) {
+      window.lucide.createIcons({ root: landingPortal });
+    }
+    return;
+  }
+
+  // User is authenticated: Reveal dashboard and hide landing portal
+  if (landingPortal) landingPortal.style.display = 'none';
+  if (appLayout) appLayout.style.display = 'flex';
+
   const hash = window.location.hash.replace('#', '').trim() || 'overview';
   const route = routes[hash] || routes['overview'];
   currentPage = hash in routes ? hash : 'overview';
@@ -107,6 +125,7 @@ function handleNavigation() {
 }
 
 function reRenderCurrentPage() {
+  if (!authService.isAuthenticated()) return;
   const container = document.getElementById('page-container');
   if (container && routes[currentPage]) {
     routes[currentPage].render(container);
@@ -410,9 +429,15 @@ function initAuthUI() {
   const sidebarUserAvatar = document.querySelector('.sidebar-footer .user-avatar span');
 
   let mode = 'signin'; // 'signin' | 'signup'
+  let landingMode = 'signin';
+
+  const landingPortal = document.getElementById('landing-portal');
+  const appLayout = document.getElementById('app');
 
   function updateUIForUser(user) {
     if (user) {
+      if (landingPortal) landingPortal.style.display = 'none';
+      if (appLayout) appLayout.style.display = 'flex';
       if (btnOpenAuth) btnOpenAuth.style.display = 'none';
       if (topbarUserPill) topbarUserPill.style.display = 'flex';
       
@@ -423,11 +448,19 @@ function initAuthUI() {
       if (topbarUserAvatar) topbarUserAvatar.textContent = initials;
       if (sidebarUserName) sidebarUserName.textContent = displayName;
       if (sidebarUserAvatar) sidebarUserAvatar.textContent = initials;
+      
+      handleNavigation();
     } else {
+      if (landingPortal) landingPortal.style.display = 'block';
+      if (appLayout) appLayout.style.display = 'none';
       if (btnOpenAuth) btnOpenAuth.style.display = 'inline-flex';
       if (topbarUserPill) topbarUserPill.style.display = 'none';
       if (sidebarUserName) sidebarUserName.textContent = 'Guest Operator';
       if (sidebarUserAvatar) sidebarUserAvatar.textContent = 'GO';
+      
+      if (window.lucide && landingPortal) {
+        window.lucide.createIcons({ root: landingPortal });
+      }
     }
   }
 
@@ -440,7 +473,7 @@ function initAuthUI() {
   const initialUser = authService.getCurrentUser();
   updateUIForUser(initialUser);
 
-  // Tab toggling
+  // Tab toggling for modal
   tabSignIn?.addEventListener('click', () => {
     mode = 'signin';
     tabSignIn.classList.add('active');
@@ -469,12 +502,14 @@ function initAuthUI() {
   btnCloseAuth?.addEventListener('click', () => modalAuth?.close());
   btnCancelAuth?.addEventListener('click', () => modalAuth?.close());
 
+  // Logout handler
   btnLogout?.addEventListener('click', async () => {
     await authService.signOut();
     updateUIForUser(null);
     realtime.showToast('Session Terminated', 'You have been successfully signed out.', 'info');
   });
 
+  // Modal Auth Form Submit
   formAuth?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('auth-email').value.trim();
@@ -505,6 +540,75 @@ function initAuthUI() {
       }
     } finally {
       if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+
+  // ==========================================
+  // Landing Portal Auth Wiring
+  // ==========================================
+  const landingTabSignIn = document.getElementById('landing-tab-signin');
+  const landingTabSignUp = document.getElementById('landing-tab-signup');
+  const formLandingAuth = document.getElementById('form-landing-auth');
+  const groupLandingUsername = document.getElementById('group-landing-username');
+  const landingBtnLabel = document.getElementById('landing-btn-label');
+  const landingAuthAlert = document.getElementById('landing-auth-alert');
+  const btnLandingSubmit = document.getElementById('btn-landing-submit');
+  const landingNavLoginBtn = document.getElementById('landing-nav-login-btn');
+
+  landingNavLoginBtn?.addEventListener('click', () => {
+    const input = document.getElementById('landing-email');
+    if (input) {
+      input.focus();
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  landingTabSignIn?.addEventListener('click', () => {
+    landingMode = 'signin';
+    landingTabSignIn.classList.add('active');
+    landingTabSignUp.classList.remove('active');
+    if (groupLandingUsername) groupLandingUsername.style.display = 'none';
+    if (landingBtnLabel) landingBtnLabel.textContent = 'Sign In & Launch Workspace';
+    if (landingAuthAlert) landingAuthAlert.style.display = 'none';
+  });
+
+  landingTabSignUp?.addEventListener('click', () => {
+    landingMode = 'signup';
+    landingTabSignUp.classList.add('active');
+    landingTabSignIn.classList.remove('active');
+    if (groupLandingUsername) groupLandingUsername.style.display = 'flex';
+    if (landingBtnLabel) landingBtnLabel.textContent = 'Create Account & Launch';
+    if (landingAuthAlert) landingAuthAlert.style.display = 'none';
+  });
+
+  formLandingAuth?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('landing-email').value.trim();
+    const password = document.getElementById('landing-password').value;
+    const username = document.getElementById('landing-username')?.value.trim();
+
+    if (landingAuthAlert) landingAuthAlert.style.display = 'none';
+    if (btnLandingSubmit) btnLandingSubmit.disabled = true;
+
+    try {
+      let result;
+      if (landingMode === 'signup') {
+        result = await authService.signUp(username, email, password);
+        realtime.showToast('Account Created', `Welcome to AI ECOSYSTEM, ${result.user?.full_name || username}!`, 'success');
+      } else {
+        result = await authService.signIn(email, password);
+        realtime.showToast('Authorized', `Welcome back, ${result.user?.full_name || email}!`, 'success');
+      }
+      formLandingAuth.reset();
+      updateUIForUser(result.user);
+    } catch (err) {
+      if (landingAuthAlert) {
+        landingAuthAlert.style.display = 'block';
+        landingAuthAlert.className = 'auth-alert error';
+        landingAuthAlert.textContent = err.message || 'Authentication failed. Please verify credentials.';
+      }
+    } finally {
+      if (btnLandingSubmit) btnLandingSubmit.disabled = false;
     }
   });
 }
