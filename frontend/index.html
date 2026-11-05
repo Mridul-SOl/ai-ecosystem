@@ -25,7 +25,7 @@
        No Dashboard Access Without Login
        ========================================== -->
   <div id="landing-portal" class="landing-portal">
-    <!-- Landing Header -->
+    <!-- Landing Header Navigation -->
     <header class="landing-nav">
       <div class="landing-brand">
         <div class="brand-logo">
@@ -33,106 +33,274 @@
         </div>
         <div class="brand-info">
           <span class="brand-title">AI ECOSYSTEM</span>
-          <span class="brand-subtitle">Enterprise OS v1.0</span>
+          <span class="brand-subtitle">Business Operating System v1.0</span>
         </div>
       </div>
+
+      <nav class="landing-nav-links">
+        <a href="#landing-features" class="landing-nav-link">Capabilities</a>
+        <a href="#landing-agents" class="landing-nav-link">8 Department Agents</a>
+        <a href="#landing-architecture" class="landing-nav-link">Architecture</a>
+      </nav>
+
       <div class="landing-nav-actions">
-        <div class="system-status-pill" style="margin-right: 12px;">
+        <div class="system-status-pill" style="margin-right: 14px;">
           <span class="status-dot online"></span>
-          <span class="status-text">Autonomous Fleet Ready</span>
+          <span class="status-text">Autonomous Fleet Online</span>
         </div>
-        <button class="btn btn-secondary btn-sm" id="landing-nav-login-btn">
+        <button class="btn btn-secondary btn-sm" id="landing-nav-signin-btn">
           <i data-lucide="log-in"></i>
-          <span>Account Login</span>
+          <span>Sign In</span>
+        </button>
+        <button class="btn btn-primary btn-sm" id="landing-nav-signup-btn">
+          <i data-lucide="sparkles"></i>
+          <span>Get Started</span>
         </button>
       </div>
     </header>
 
     <!-- Landing Main Content -->
     <main class="landing-content">
-      <div class="landing-hero-section">
+      <!-- 1. Hero Section -->
+      <section class="landing-hero-section">
         <div class="landing-chip">
           <span class="telemetry-radar-beacon" style="display:inline-block; width:8px; height:8px; margin-right:6px;"></span>
           <span>AUTONOMOUS MULTI-AGENT ENTERPRISE ARCHITECTURE</span>
         </div>
         <h1 class="landing-title">The Complete AI Business Operating System</h1>
         <p class="landing-subtitle">
-          Operate a virtual company powered by 8 specialized AI agents coordinated by CEO Nova.
-          Instant sign-in and authorization — zero email confirmation barrier.
+          Operate a virtual enterprise powered by 8 specialized AI agents coordinated by CEO Nova.
+          Delegate corporate goals, synthesize executive decisions, and execute multi-department workflows with zero friction.
         </p>
-      </div>
 
-      <!-- Embedded Auth Card -->
-      <div class="landing-auth-wrapper">
-        <div class="landing-auth-card">
-          <div class="landing-auth-header">
-            <div class="auth-tabs" style="margin-bottom:0;">
-              <button class="auth-tab active" id="landing-tab-signin" type="button">Sign In</button>
-              <button class="auth-tab" id="landing-tab-signup" type="button">Create Account</button>
+        <!-- Dedicated Auth CTA Buttons (Not Direct Form) -->
+        <div class="landing-hero-actions">
+          <button class="btn btn-primary btn-lg landing-hero-cta" id="landing-hero-signup-btn">
+            <i data-lucide="sparkles"></i>
+            <span>Get Started — Instant Access</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+          <button class="btn btn-secondary btn-lg landing-hero-cta" id="landing-hero-signin-btn">
+            <i data-lucide="log-in"></i>
+            <span>Sign In to Console</span>
+          </button>
+        </div>
+
+        <div class="landing-trust-bar">
+          <div class="trust-item"><i data-lucide="shield-check"></i> Instant Authorization (Zero Email Confirmation Barrier)</div>
+          <div class="trust-separator">•</div>
+          <div class="trust-item"><i data-lucide="zap"></i> Groq LPU 120B Inference</div>
+          <div class="trust-separator">•</div>
+          <div class="trust-item"><i data-lucide="lock"></i> Human-in-the-Loop Gating</div>
+        </div>
+      </section>
+
+      <!-- 2. System KPI & Telemetry Strip -->
+      <section class="landing-stats-strip">
+        <div class="stat-box">
+          <span class="stat-number">8</span>
+          <span class="stat-label">Autonomous Department Agents</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">&lt; 1.2s</span>
+          <span class="stat-label">Neural Inference Latency</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Instant Supabase Auth</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">Dual-Layer</span>
+          <span class="stat-label">Vector & Relational Memory</span>
+        </div>
+      </section>
+
+      <!-- 3. All 8 Department Agents Showcase -->
+      <section class="landing-section" id="landing-agents">
+        <div class="section-header-center">
+          <span class="section-tag">SPECIALIZED AI ROSTER</span>
+          <h2 class="section-heading">8 Department Directors. One Unified Boardroom.</h2>
+          <p class="section-desc">Every agent operates with domain-specialized prompts, mathematical models, independent tools, and vector memory recall.</p>
+        </div>
+
+        <div class="landing-agents-grid">
+          <!-- Nova CEO -->
+          <div class="agent-showcase-card leader">
+            <div class="agent-avatar-wrap"><i data-lucide="crown"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Executive Leadership</span>
+              <h4>Nova (CEO)</h4>
+              <p>Parses business directives, decomposes goals into subtask DAGs, reviews and critiques department outputs, and synthesizes consolidated strategies.</p>
             </div>
           </div>
 
-          <form id="form-landing-auth" class="modal-form" style="padding-top:20px;">
-            <div class="form-group" id="group-landing-username" style="display:none;">
-              <label for="landing-username">Username *</label>
-              <input type="text" id="landing-username" placeholder="e.g. executive.alex" autocomplete="username" />
+          <!-- Chloe Marketing -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="megaphone"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Marketing & Growth</span>
+              <h4>Chloe (CMO)</h4>
+              <p>Formulates phased omnichannel GTM campaigns, conversion copywriting, viral social hooks, influencer seeding, and CAC modeling.</p>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label for="landing-email">Email Address *</label>
-              <input type="email" id="landing-email" required placeholder="name@company.com" autocomplete="email" />
+          <!-- Sterling Finance -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="dollar-sign"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Finance & Economics</span>
+              <h4>Sterling (CFO)</h4>
+              <p>Performs zero-deficit budget allocation, unit economics (CAC, LTV, AOV, Gross Margin), breakeven projections, and risk controls.</p>
             </div>
+          </div>
 
-            <div class="form-group">
-              <label for="landing-password">Password *</label>
-              <input type="password" id="landing-password" required minlength="6" placeholder="••••••••" autocomplete="current-password" />
-              <span class="form-hint">
-                <i data-lucide="check" style="width:12px; height:12px; vertical-align:middle; color:#059669;"></i>
-                Instant authorization without email confirmation barrier.
-              </span>
+          <!-- Marcus HR -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="users"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Human Resources</span>
+              <h4>Marcus (CPO)</h4>
+              <p>Architects hiring roadmaps, team capacity models, compensation benchmarks, employee OKRs, and labor compliance frameworks.</p>
             </div>
+          </div>
 
-            <div id="landing-auth-alert" class="auth-alert" style="display:none;"></div>
+          <!-- Atlas Operations -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="workflow"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Business Operations</span>
+              <h4>Atlas (COO)</h4>
+              <p>Builds supply chain logistics, fulfillment pipelines, vendor SLA contracts, and Standard Operating Procedures (SOPs).</p>
+            </div>
+          </div>
 
-            <button type="submit" class="btn btn-primary btn-lg" id="btn-landing-submit" style="width:100%; margin-top:16px;">
-              <span id="landing-btn-label">Sign In & Launch Workspace</span>
-              <i data-lucide="arrow-right"></i>
+          <!-- Athena Research -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="microscope"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Market Intelligence</span>
+              <h4>Athena (R&D)</h4>
+              <p>Gathers empirical competitive intelligence, TAM/SAM/SOM market sizing, customer persona sentiment, and web research data.</p>
+            </div>
+          </div>
+
+          <!-- Vigil Security -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="shield-check"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Security & Compliance</span>
+              <h4>Vigil (CISO)</h4>
+              <p>Audits software threat surfaces (STRIDE), PCI-DSS/GDPR compliance, credential leak detection, and gates consequential external actions.</p>
+            </div>
+          </div>
+
+          <!-- Forge Infrastructure -->
+          <div class="agent-showcase-card">
+            <div class="agent-avatar-wrap"><i data-lucide="server"></i></div>
+            <div class="agent-card-info">
+              <span class="agent-dept">Platform & DevOps</span>
+              <h4>Forge (Infra)</h4>
+              <p>Architects cloud serverless topologies, Docker containerization, CI/CD pipelines, and PyGithub repository operations.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Architecture & Workflow DAG Visualizer Section -->
+      <section class="landing-section" id="landing-architecture">
+        <div class="section-header-center">
+          <span class="section-tag">MULTI-AGENT COORDINATION ENGINE</span>
+          <h2 class="section-heading">How Directives Flow Through The Enterprise</h2>
+          <p class="section-desc">Experience autonomous coordination: inputs are decomposed, executed in parallel, critiqued, and synthesized into executive decisions.</p>
+        </div>
+
+        <div class="dag-visual-container">
+          <div class="dag-step-box">
+            <div class="dag-step-badge">Phase 1</div>
+            <h4>Executive Directive</h4>
+            <p>CEO Nova receives high-level prompt, extracts constraints (budget, timeline), and generates a structured subtask DAG.</p>
+          </div>
+          <div class="dag-connector">&rarr;</div>
+          <div class="dag-step-box">
+            <div class="dag-step-badge">Phase 2</div>
+            <h4>Parallel Department Execution</h4>
+            <p>Athena conducts market research &rarr; Chloe formulates GTM &rarr; Sterling models unit economics with zero-deficit budget allocation.</p>
+          </div>
+          <div class="dag-connector">&rarr;</div>
+          <div class="dag-step-box">
+            <div class="dag-step-badge">Phase 3</div>
+            <h4>CEO Critique & Review Loop</h4>
+            <p>Nova assesses output depth and numerical accuracy. If metrics or detail fall below standard, revisions are enforced.</p>
+          </div>
+          <div class="dag-connector">&rarr;</div>
+          <div class="dag-step-box">
+            <div class="dag-step-badge">Phase 4</div>
+            <h4>Consolidated Strategy</h4>
+            <p>Executive strategy is finalized, broadcast to dashboard via WebSockets, and indexed into ChromaDB vector memory.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Features Grid -->
+      <section class="landing-section" id="landing-features">
+        <div class="section-header-center">
+          <span class="section-tag">ENTERPRISE OS CAPABILITIES</span>
+          <h2 class="section-heading">Built For Real Business Execution</h2>
+        </div>
+
+        <div class="landing-features-grid">
+          <div class="landing-feature-card">
+            <div class="feature-icon-wrap"><i data-lucide="bot"></i></div>
+            <h3>CEO AI Conversational Hub</h3>
+            <p>Chat directly with CEO Nova to mobilize complex business operations, ask strategic questions, and inspect live workflow execution telemetry.</p>
+          </div>
+
+          <div class="landing-feature-card">
+            <div class="feature-icon-wrap"><i data-lucide="check-square"></i></div>
+            <h3>Kanban Task Manager & Approvals</h3>
+            <p>Real-time task tracking with integrated human-in-the-loop authorization buttons, execution output logs, and state transition timelines.</p>
+          </div>
+
+          <div class="landing-feature-card">
+            <div class="feature-icon-wrap"><i data-lucide="activity"></i></div>
+            <h3>High-Tech Telemetry HUD</h3>
+            <p>Live stopwatch timing, Groq LPU 120B neural status radar, laser progress bars, and real-time WebSocket event dispatching.</p>
+          </div>
+
+          <div class="landing-feature-card">
+            <div class="feature-icon-wrap"><i data-lucide="database"></i></div>
+            <h3>Dual-Layer Vector Memory</h3>
+            <p>SQLite relational storage paired with semantic vector embeddings for cross-department organizational recall and past decision retrieval.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Bottom Call to Action -->
+      <section class="landing-bottom-cta">
+        <div class="bottom-cta-card">
+          <h2>Ready to Deploy Your Autonomous AI Enterprise?</h2>
+          <p>Access the boardroom immediately with zero email confirmation barrier.</p>
+          <div class="bottom-cta-buttons">
+            <button class="btn btn-primary btn-lg" id="landing-bottom-signup-btn">
+              <i data-lucide="sparkles"></i>
+              <span>Create Account — Free & Instant</span>
             </button>
-          </form>
+            <button class="btn btn-secondary btn-lg" id="landing-bottom-signin-btn">
+              <i data-lucide="log-in"></i>
+              <span>Sign In</span>
+            </button>
+          </div>
         </div>
-      </div>
-
-      <!-- Features Showcase Grid -->
-      <div class="landing-features-grid">
-        <div class="landing-feature-card">
-          <div class="feature-icon-wrap"><i data-lucide="crown"></i></div>
-          <h3>CEO Nova Orchestrator</h3>
-          <p>Translates high-level natural language instructions into structured multi-agent subtask DAGs, critiques department outputs, and synthesizes executive decisions.</p>
-        </div>
-
-        <div class="landing-feature-card">
-          <div class="feature-icon-wrap"><i data-lucide="users"></i></div>
-          <h3>8 Autonomous Departments</h3>
-          <p>Dedicated specialist agents across Marketing, Finance, HR, Operations, Market Research, Cyber Security, and Cloud Infrastructure with isolated capabilities.</p>
-        </div>
-
-        <div class="landing-feature-card">
-          <div class="feature-icon-wrap"><i data-lucide="activity"></i></div>
-          <h3>High-Tech Telemetry HUD</h3>
-          <p>Live millisecond progress tracking, Groq LPU 120B neural inference engine, real-time status telemetry, and human-in-the-loop security authorization.</p>
-        </div>
-
-        <div class="landing-feature-card">
-          <div class="feature-icon-wrap"><i data-lucide="database"></i></div>
-          <h3>Dual-Layer Memory</h3>
-          <p>SQLite relational storage for transactional records paired with semantic vector embeddings for cross-department organizational recall.</p>
-        </div>
-      </div>
+      </section>
     </main>
 
     <!-- Landing Footer -->
     <footer class="landing-footer">
       <span>AI ECOSYSTEM &copy; 2026 — Multi-Agent Enterprise Business Operating System</span>
+      <div class="landing-footer-actions">
+        <button class="btn btn-ghost btn-xs" id="landing-footer-signin-btn">Sign In</button>
+        <button class="btn btn-ghost btn-xs" id="landing-footer-signup-btn">Sign Up</button>
+      </div>
       <span class="landing-footer-tag">Production Ready • Supabase Auth • Groq LPU Powered</span>
     </footer>
   </div>
@@ -495,6 +663,13 @@
           </button>
         </div>
       </form>
+    </div>
+  </dialog>
+
+  <!-- Task Detail Inspection Modal -->
+  <dialog class="modal-dialog" id="modal-task-detail" closedby="any">
+    <div class="modal-card" style="max-width: 680px;" id="task-detail-content">
+      <!-- Injected by tasks.js openTaskDetailModal -->
     </div>
   </dialog>
 

@@ -30,3 +30,32 @@ async def test_register_and_login(client):
     me_resp = await client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
     assert me_resp.status_code == 200
     assert me_resp.json()["email"] == unique_email
+
+    # Test login using username / full_name
+    username_login_resp = await client.post("/api/auth/login", json={
+        "email": "Test Engineer",
+        "password": "strongPassword123"
+    })
+    assert username_login_resp.status_code == 200
+    assert "access_token" in username_login_resp.json()
+
+@pytest.mark.asyncio
+async def test_supabase_sync_with_password(client):
+    unique_email = f"supa_{uuid.uuid4().hex[:8]}@example.com"
+    sync_resp = await client.post("/api/auth/supabase-sync", json={
+        "id": f"sub_{uuid.uuid4().hex[:8]}",
+        "email": unique_email,
+        "username": "Supa User",
+        "password": "supaPassword123"
+    })
+    assert sync_resp.status_code == 200
+    sync_data = sync_resp.json()
+    assert sync_data["user"]["email"] == unique_email
+
+    # Should be able to log in directly via local fallback using the synced password
+    login_resp = await client.post("/api/auth/login", json={
+        "email": unique_email,
+        "password": "supaPassword123"
+    })
+    assert login_resp.status_code == 200
+    assert "access_token" in login_resp.json()

@@ -47,13 +47,23 @@ async def register(user_in: UserRegister, db: AsyncSession = Depends(get_db)):
 
 @router.post("/login", response_model=Token)
 async def login(credentials: UserLogin, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == credentials.email))
-    user = result.scalar_one_or_none()
+    cred_target = credentials.email.strip().lower()
+    result = await db.execute(
+        select(User).where(
+            (User.email.ilike(cred_target)) | (User.full_name.ilike(credentials.email.strip()))
+        )
+    )
+    users = result.scalars().all()
+    user = None
+    for candidate in users:
+        if verify_password(credentials.password, candidate.hashed_password):
+            user = candidate
+            break
 
-    if not user or not verify_password(credentials.password, user.hashed_password):
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password.",
+            detail="Incorrect username/email or password.",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
@@ -72,7 +82,11 @@ async def login(credentials: UserLogin, db: AsyncSession = Depends(get_db)):
 @router.post("/token", response_model=Token)
 async def login_oauth(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
     """OAuth2 form compliant endpoint for Swagger UI & token standard."""
-    result = await db.execute(select(User).where(User.email == form_data.username))
+    result = await db.execute(
+        select(User).where(
+            (User.email.ilike(form_data.username.strip())) | (User.full_name.ilike(form_data.username.strip()))
+        )
+    )
     user = result.scalar_one_or_none()
 
     if not user or not verify_password(form_data.password, user.hashed_password):
@@ -101,12 +115,14 @@ async def supabase_sync(
     result = await db.execute(select(User).where((User.id == payload.id) | (User.email == payload.email)))
     user = result.scalar_one_or_none()
 
+    hashed_pwd = get_password_hash(payload.password) if payload.password else "supabase-managed"
+
     if not user:
         user = User(
             id=payload.id,
             email=payload.email,
             full_name=payload.username or payload.email.split("@")[0].capitalize(),
-            hashed_password="supabase-managed",
+            hashed_password=hashed_pwd,
             role=payload.role or "member",
             is_active=True
         )
@@ -119,8 +135,14 @@ async def supabase_sync(
             level="INFO"
         )
     else:
+        changed = False
+        if payload.password and (user.hashed_password == "supabase-managed" or not verify_password(payload.password, user.hashed_password)):
+            user.hashed_password = hashed_pwd
+            changed = True
         if payload.username and user.full_name != payload.username:
             user.full_name = payload.username
+            changed = True
+        if changed:
             await db.commit()
             await db.refresh(user)
 

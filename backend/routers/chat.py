@@ -40,16 +40,48 @@ async def chat_with_ceo(
         wf = await ceo_orchestrator.orchestrate_objective(objective=msg)
         created_workflow_id = wf.id
 
-        reply = (
-            f"### Executive Directive Initiated\n\n"
-            f"I have received your objective: **\"{msg}\"**\n\n"
-            f"**Strategic Execution Plan:**\n"
-            f"- I have decomposed this initiative into **{wf.total_steps} coordinated department tasks**.\n"
-            f"- Research, Marketing, and Finance agents are being mobilized in sequence.\n"
-            f"- Tracking Workflow ID: `{wf.id}`\n\n"
-            f"You can monitor live progress on the **Workflows** and **Task Manager** boards. "
-            f"I will deliver the consolidated strategy once all departmental reviews are finalized."
-        )
+        # Generate intelligent executive appraisal from CEO Nova via LLM
+        from backend.ai.llm_provider import get_llm_provider
+        llm = get_llm_provider()
+
+        steps_summary = "\n".join([
+            f"- **{step.get('department', 'Department')} ({step.get('agent_id', 'agent').upper()})**: {step.get('task_title', 'Task')}"
+            for step in (wf.execution_plan or [])
+        ])
+
+        executive_prompt = f"""The operator has issued the following business objective:
+"{msg}"
+
+As CEO Nova, I have decomposed this objective into {wf.total_steps} cross-departmental tasks:
+{steps_summary}
+Workflow ID: `{wf.id}`
+
+Deliver an authoritative, executive-level strategic appraisal to the operator.
+Your reply MUST include:
+1. **Executive Appraisal & Strategic Thesis**: High-level evaluation of the directive, market opportunity, and key success factors.
+2. **Departmental Mobilization Strategy**: Concise explanation of why each department has been assigned their specific mandate and how their outputs interlock.
+3. **Core Economic & Operational Guardrails**: Realistic benchmarks (e.g. CAC/LTV targets, unit economics, margin floors, delivery SLAs) to safeguard profitability.
+4. **Immediate Next Step**: A note that the multi-agent DAG workflow (ID: `{wf.id}`) has been initialized and is executing live in the background across Task Manager and Workflows boards.
+
+Tone: Decisive, elite executive acumen, zero fluff, commercially rigorous."""
+
+        try:
+            reply = await llm.generate_response(
+                system_prompt=ceo_agent.system_prompt,
+                user_prompt=executive_prompt,
+                agent_role="ceo",
+                department="Executive Leadership"
+            )
+        except Exception as e:
+            reply = (
+                f"### Executive Directive Initiated\n\n"
+                f"I have received and mobilized our leadership team for: **\"{msg}\"**\n\n"
+                f"**Departmental Mobilization ({wf.total_steps} Initiatives):**\n"
+                f"{steps_summary}\n\n"
+                f"- **Tracking Workflow ID**: `{wf.id}`\n"
+                f"- **Real-time Status**: Live execution underway across Task Manager and Workflows boards. "
+                f"I will deliver the consolidated strategy once all departmental reviews are finalized."
+            )
     else:
         # Direct conversational answer from CEO
         reply = await ceo_agent.chat_direct(msg)

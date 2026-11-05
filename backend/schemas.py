@@ -10,7 +10,7 @@ class UserRegister(BaseModel):
     role: Optional[str] = "admin"
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 class SupabaseSyncRequest(BaseModel):
@@ -18,6 +18,7 @@ class SupabaseSyncRequest(BaseModel):
     email: EmailStr
     username: Optional[str] = None
     role: Optional[str] = "member"
+    password: Optional[str] = None
 
 class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)

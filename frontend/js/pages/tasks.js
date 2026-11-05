@@ -89,18 +89,33 @@ export async function renderTasks(container) {
 
 async function loadTasks(container, department = 'all') {
   try {
+    const host = container || document.getElementById('page-container');
+    if (!host) return;
+
     const tasks = await api.getTasks({ department: department === 'all' ? null : department });
 
-    const colPending = container.querySelector('#col-pending');
-    const colRunning = container.querySelector('#col-running');
-    const colApproval = container.querySelector('#col-approval');
-    const colCompleted = container.querySelector('#col-completed');
-    const colFailed = container.querySelector('#col-failed');
+    const colPending = host.querySelector('#col-pending');
+    const colRunning = host.querySelector('#col-running');
+    const colApproval = host.querySelector('#col-approval');
+    const colCompleted = host.querySelector('#col-completed');
+    const colFailed = host.querySelector('#col-failed');
 
     const counts = { pending: 0, running: 0, approval: 0, completed: 0, failed: 0 };
     const htmls = { pending: '', running: '', approval: '', completed: '', failed: '' };
 
     tasks.forEach(t => {
+      const isAwaitingApproval = t.status === 'Awaiting Approval' || (t.requires_approval && !t.is_approved);
+      const approvalCardHtml = isAwaitingApproval ? `
+        <div class="task-card-approval-actions" style="display:flex; gap:8px; margin-top:10px; padding-top:10px; border-top:1px solid var(--border-subtle);">
+          <button class="btn btn-success btn-xs btn-approve-card" data-task-id="${t.id}" style="flex:1; justify-content:center; font-size:11.5px; padding:6px 10px; font-weight:600;">
+            <i data-lucide="check" style="width:13px; height:13px;"></i> Authorize
+          </button>
+          <button class="btn btn-danger btn-xs btn-reject-card" data-task-id="${t.id}" style="flex:1; justify-content:center; font-size:11.5px; padding:6px 10px; font-weight:600;">
+            <i data-lucide="x" style="width:13px; height:13px;"></i> Reject
+          </button>
+        </div>
+      ` : '';
+
       const cardHtml = `
         <div class="task-card" data-task-id="${t.id}">
           <div class="task-card-top">
@@ -113,18 +128,19 @@ async function loadTasks(container, department = 'all') {
             <span>${t.department}</span>
             <span>${new Date(t.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}</span>
           </div>
+          ${approvalCardHtml}
         </div>
       `;
 
-      if (t.status === 'Pending' || t.status === 'Assigned') {
+      if (isAwaitingApproval) {
+        htmls.approval += cardHtml;
+        counts.approval++;
+      } else if (t.status === 'Pending' || t.status === 'Assigned') {
         htmls.pending += cardHtml;
         counts.pending++;
       } else if (t.status === 'Running') {
         htmls.running += cardHtml;
         counts.running++;
-      } else if (t.status === 'Awaiting Approval') {
-        htmls.approval += cardHtml;
-        counts.approval++;
       } else if (t.status === 'Completed') {
         htmls.completed += cardHtml;
         counts.completed++;
@@ -140,21 +156,58 @@ async function loadTasks(container, department = 'all') {
     if (colCompleted) colCompleted.innerHTML = htmls.completed || `<div style="color:var(--text-muted); font-size:11px; text-align:center; padding:16px;">No completed tasks</div>`;
     if (colFailed) colFailed.innerHTML = htmls.failed || `<div style="color:var(--text-muted); font-size:11px; text-align:center; padding:16px;">No failed tasks</div>`;
 
-    container.querySelector('#count-pending').textContent = counts.pending;
-    container.querySelector('#count-running').textContent = counts.running;
-    container.querySelector('#count-approval').textContent = counts.approval;
-    container.querySelector('#count-completed').textContent = counts.completed;
-    container.querySelector('#count-failed').textContent = counts.failed;
+    if (host.querySelector('#count-pending')) host.querySelector('#count-pending').textContent = counts.pending;
+    if (host.querySelector('#count-running')) host.querySelector('#count-running').textContent = counts.running;
+    if (host.querySelector('#count-approval')) host.querySelector('#count-approval').textContent = counts.approval;
+    if (host.querySelector('#count-completed')) host.querySelector('#count-completed').textContent = counts.completed;
+    if (host.querySelector('#count-failed')) host.querySelector('#count-failed').textContent = counts.failed;
 
-    // Bind card click to open task detail modal
-    container.querySelectorAll('.task-card').forEach(card => {
-      card.addEventListener('click', () => {
+    // Bind card click to open task detail modal (excluding action button clicks)
+    host.querySelectorAll('.task-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-approve-card') || e.target.closest('.btn-reject-card')) return;
         const taskId = card.getAttribute('data-task-id');
         openTaskDetailModal(taskId);
       });
     });
 
-    if (window.lucide) window.lucide.createIcons({ root: container });
+    // Bind direct card approval buttons
+    host.querySelectorAll('.btn-approve-card').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const taskId = btn.getAttribute('data-task-id');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner-sm"></span> Approving...`;
+        try {
+          await api.approveTask(taskId);
+          if (window.realtime) window.realtime.showToast('Task Authorized', 'Task approved and queued for execution.', 'success');
+          await loadTasks(host, department);
+        } catch (err) {
+          alert(`Error approving task: ${err.message}`);
+          btn.disabled = false;
+        }
+      });
+    });
+
+    // Bind direct card rejection buttons
+    host.querySelectorAll('.btn-reject-card').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const taskId = btn.getAttribute('data-task-id');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner-sm"></span> Rejecting...`;
+        try {
+          await api.rejectTask(taskId);
+          if (window.realtime) window.realtime.showToast('Task Rejected', 'Task rejected and cancelled.', 'info');
+          await loadTasks(host, department);
+        } catch (err) {
+          alert(`Error rejecting task: ${err.message}`);
+          btn.disabled = false;
+        }
+      });
+    });
+
+    if (window.lucide) window.lucide.createIcons({ root: host });
 
   } catch (err) {
     console.error('Failed to load tasks:', err);
@@ -248,25 +301,25 @@ async function openTaskDetailModal(taskId) {
     content.querySelector('#btn-approve-task-action')?.addEventListener('click', async () => {
       await api.approveTask(taskId);
       modal.close();
-      loadTasks(document.querySelector('.page-content'));
+      loadTasks(document.getElementById('page-container'));
     });
 
     content.querySelector('#btn-reject-task-action')?.addEventListener('click', async () => {
       await api.rejectTask(taskId);
       modal.close();
-      loadTasks(document.querySelector('.page-content'));
+      loadTasks(document.getElementById('page-container'));
     });
 
     content.querySelector('#btn-retry-task-action')?.addEventListener('click', async () => {
       await api.retryTask(taskId);
       modal.close();
-      loadTasks(document.querySelector('.page-content'));
+      loadTasks(document.getElementById('page-container'));
     });
 
     content.querySelector('#btn-cancel-task-action')?.addEventListener('click', async () => {
       await api.cancelTask(taskId);
       modal.close();
-      loadTasks(document.querySelector('.page-content'));
+      loadTasks(document.getElementById('page-container'));
     });
 
     if (window.lucide) window.lucide.createIcons({ root: content });
