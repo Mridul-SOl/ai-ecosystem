@@ -421,7 +421,7 @@ Department Outputs:
         synth_prompt += "\nSynthesize a comprehensive, cohesive Executive Strategy & Operating Plan uniting all departmental findings."
 
         synthesis = await llm.generate_response(
-            system_prompt="You are Nova, the CEO. Deliver an executive synthesis uniting all department outputs into a definitive roadmap.",
+            system_prompt="You are Vikram, the CEO. Deliver an executive synthesis uniting all department outputs into a definitive roadmap.",
             user_prompt=synth_prompt,
             agent_role="ceo",
             department="Executive Leadership"

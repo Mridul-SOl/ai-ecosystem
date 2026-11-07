@@ -6,20 +6,21 @@ export async function renderWorkflows(container) {
       <div class="page-header-row">
         <div>
           <h2 class="page-title">Executive Multi-Agent Workflows</h2>
-          <p class="page-description">End-to-end coordinated cross-department operations orchestrated by CEO Agent Nova.</p>
+          <p class="page-description">End-to-end coordinated cross-department operations orchestrated by CEO Agent Vikram.</p>
         </div>
         <div style="display:flex; gap:10px;">
           <button class="btn btn-secondary btn-sm" id="btn-refresh-wf">
             <i data-lucide="refresh-cw"></i> Refresh
           </button>
           <button class="btn btn-primary btn-sm" id="btn-new-wf-page">
-            <i data-lucide="sparkles"></i> Launch New Workflow
+            <i data-lucide="plus"></i> Launch New Workflow
           </button>
         </div>
       </div>
 
       <div class="workflow-list" id="full-workflows-list">
-        <div style="color:var(--text-muted); font-size:13px;">Loading executive workflows...</div>
+        <div class="skeleton-card" style="height: 140px; margin-bottom: 16px;"></div>
+        <div class="skeleton-card" style="height: 140px;"></div>
       </div>
     </div>
   `;
@@ -45,10 +46,10 @@ async function loadWorkflows(container) {
           <i data-lucide="git-merge" style="width:36px; height:36px; color:var(--text-muted); margin-bottom:12px;"></i>
           <h3 style="color:var(--text-primary); font-size:15px; margin-bottom:6px;">No Corporate Workflows Yet</h3>
           <p style="color:var(--text-secondary); font-size:13px; max-width:440px; margin:0 auto 16px auto;">
-            Give CEO Agent Nova a high-level corporate objective (e.g., launch a clothing brand with a ₹50,000 budget), and watch the system coordinate all 8 departments autonomously.
+            Give CEO Agent Vikram a high-level corporate objective (e.g., launch a clothing brand with a ₹50,000 budget), and watch the system coordinate all 8 departments autonomously.
           </p>
           <button class="btn btn-primary" id="btn-empty-create-wf">
-            <i data-lucide="sparkles"></i> Launch First Workflow
+            <i data-lucide="plus"></i> Launch First Workflow
           </button>
         </div>
       `;
@@ -122,7 +123,7 @@ async function loadWorkflows(container) {
             </div>
           ` : `
             <div style="margin-top:14px; font-size:12px; color:var(--text-muted); font-style:italic;">
-              CEO Agent Nova is coordinating departments and synthesizing the consolidated strategy...
+              CEO Agent Vikram is coordinating departments and synthesizing the consolidated strategy...
             </div>
           `}
         </div>

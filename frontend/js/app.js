@@ -234,6 +234,37 @@ function initModals() {
   document.getElementById('btn-open-terminal')?.addEventListener('click', () => {
     window.location.hash = '#logs';
   });
+
+  // Enterprise Legal Modals (Terms & Privacy)
+  const modalTerms = document.getElementById('modal-terms');
+  const modalPrivacy = document.getElementById('modal-privacy');
+
+  document.getElementById('btn-terms-modal')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalTerms?.showModal();
+  });
+  document.getElementById('btn-close-terms-modal')?.addEventListener('click', () => modalTerms?.close());
+  document.getElementById('btn-close-terms-footer')?.addEventListener('click', () => modalTerms?.close());
+
+  document.getElementById('btn-privacy-modal')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalPrivacy?.showModal();
+  });
+  document.getElementById('btn-close-privacy-modal')?.addEventListener('click', () => modalPrivacy?.close());
+  document.getElementById('btn-close-privacy-footer')?.addEventListener('click', () => modalPrivacy?.close());
+
+  // Interactive Live Product Console Preview Tabs
+  const previewTabs = document.querySelectorAll('#console-preview-tabs .console-tab-btn');
+  previewTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      previewTabs.forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.console-tab-panel').forEach(p => p.classList.remove('active'));
+      
+      tab.classList.add('active');
+      const targetPanelId = tab.getAttribute('data-tab');
+      document.getElementById(targetPanelId)?.classList.add('active');
+    });
+  });
 }
 
 function getDepartmentForAgent(id) {

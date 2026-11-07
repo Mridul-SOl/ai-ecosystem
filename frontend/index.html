@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI ECOSYSTEM — Multi-Agent AI Business Operating System</title>
+  <title>AI ECOSYSTEM: Autonomous Multi-Agent Business Operating System</title>
   
-  <!-- Fonts -->
+  <!-- Fonts (Plus Jakarta Sans & JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- CSS Stylesheet (Empty Premium Light Theme) -->
+  <!-- CSS Stylesheet (Executive Obsidian & Cobalt Theme) -->
   <link rel="stylesheet" href="/css/styles.css">
   
   <!-- External Libraries (Supabase, Lucide Icons, Chart.js, Marked) -->
@@ -40,6 +40,7 @@
       <nav class="landing-nav-links">
         <a href="#landing-features" class="landing-nav-link">Capabilities</a>
         <a href="#landing-agents" class="landing-nav-link">8 Department Agents</a>
+        <a href="#landing-preview" class="landing-nav-link">Live Console Demo</a>
         <a href="#landing-architecture" class="landing-nav-link">Architecture</a>
       </nav>
 
@@ -53,7 +54,7 @@
           <span>Sign In</span>
         </button>
         <button class="btn btn-primary btn-sm" id="landing-nav-signup-btn">
-          <i data-lucide="sparkles"></i>
+          <i data-lucide="arrow-right"></i>
           <span>Get Started</span>
         </button>
       </div>
@@ -64,38 +65,39 @@
       <!-- 1. Hero Section -->
       <section class="landing-hero-section">
         <div class="landing-chip">
-          <span class="telemetry-radar-beacon" style="display:inline-block; width:8px; height:8px; margin-right:6px;"></span>
           <span>AUTONOMOUS MULTI-AGENT ENTERPRISE ARCHITECTURE</span>
         </div>
         <h1 class="landing-title">The Complete AI Business Operating System</h1>
         <p class="landing-subtitle">
-          Operate a virtual enterprise powered by 8 specialized AI agents coordinated by CEO Nova.
+          Operate a virtual enterprise powered by 8 specialized AI agents coordinated by CEO Vikram.
           Delegate corporate goals, synthesize executive decisions, and execute multi-department workflows with zero friction.
         </p>
 
-        <!-- Dedicated Auth CTA Buttons (Not Direct Form) -->
+        <!-- Dedicated Auth CTA Buttons -->
         <div class="landing-hero-actions">
           <button class="btn btn-primary btn-lg landing-hero-cta" id="landing-hero-signup-btn">
-            <i data-lucide="sparkles"></i>
-            <span>Get Started — Instant Access</span>
+            <span>Get Started: Instant Access</span>
             <i data-lucide="arrow-right"></i>
           </button>
           <button class="btn btn-secondary btn-lg landing-hero-cta" id="landing-hero-signin-btn">
             <i data-lucide="log-in"></i>
             <span>Sign In to Console</span>
           </button>
-          <button class="btn btn-secondary btn-lg landing-hero-cta" id="landing-hero-demo-btn" style="border: 1px dashed var(--accent); color: var(--accent); font-weight: 600;">
-            <i data-lucide="zap"></i>
-            <span>⚡ One-Click Demo</span>
+          <button class="btn btn-secondary btn-lg landing-hero-cta" id="landing-hero-demo-btn" style="border: 1px solid var(--accent); color: var(--accent); font-weight: 600;">
+            <i data-lucide="play"></i>
+            <span>One-Click Console Demo</span>
           </button>
         </div>
 
+        <!-- Technical Specification Matrix Bar (No Generic Checkmarks) -->
         <div class="landing-trust-bar">
-          <div class="trust-item"><i data-lucide="shield-check"></i> Instant Authorization (Zero Email Confirmation Barrier)</div>
+          <div class="trust-item"><span style="font-weight:600; color:var(--text-primary);">Engine:</span> Groq LPU 120B</div>
           <div class="trust-separator">•</div>
-          <div class="trust-item"><i data-lucide="zap"></i> Groq LPU 120B Inference</div>
+          <div class="trust-item"><span style="font-weight:600; color:var(--text-primary);">Latency:</span> &lt; 1.2s Real-Time DAG</div>
           <div class="trust-separator">•</div>
-          <div class="trust-item"><i data-lucide="lock"></i> Human-in-the-Loop Gating</div>
+          <div class="trust-item"><span style="font-weight:600; color:var(--text-primary);">Memory:</span> Vector & Relational Storage</div>
+          <div class="trust-separator">•</div>
+          <div class="trust-item"><span style="font-weight:600; color:var(--text-primary);">Governance:</span> Human-in-the-Loop Gating</div>
         </div>
       </section>
 
@@ -128,82 +130,82 @@
         </div>
 
         <div class="landing-agents-grid">
-          <!-- Nova CEO -->
+          <!-- Vikram CEO -->
           <div class="agent-showcase-card leader">
             <div class="agent-avatar-wrap"><i data-lucide="crown"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Executive Leadership</span>
-              <h4>Nova (CEO)</h4>
+              <h4>Vikram (CEO)</h4>
               <p>Parses business directives, decomposes goals into subtask DAGs, reviews and critiques department outputs, and synthesizes consolidated strategies.</p>
             </div>
           </div>
 
-          <!-- Chloe Marketing -->
+          <!-- Kavya Marketing -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="megaphone"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Marketing & Growth</span>
-              <h4>Chloe (CMO)</h4>
+              <h4>Kavya (CMO)</h4>
               <p>Formulates phased omnichannel GTM campaigns, conversion copywriting, viral social hooks, influencer seeding, and CAC modeling.</p>
             </div>
           </div>
 
-          <!-- Sterling Finance -->
+          <!-- Aditya Finance -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="dollar-sign"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Finance & Economics</span>
-              <h4>Sterling (CFO)</h4>
+              <h4>Aditya (CFO)</h4>
               <p>Performs zero-deficit budget allocation, unit economics (CAC, LTV, AOV, Gross Margin), breakeven projections, and risk controls.</p>
             </div>
           </div>
 
-          <!-- Marcus HR -->
+          <!-- Manav HR -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="users"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Human Resources</span>
-              <h4>Marcus (CPO)</h4>
+              <h4>Manav (CPO)</h4>
               <p>Architects hiring roadmaps, team capacity models, compensation benchmarks, employee OKRs, and labor compliance frameworks.</p>
             </div>
           </div>
 
-          <!-- Atlas Operations -->
+          <!-- Kabir Operations -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="workflow"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Business Operations</span>
-              <h4>Atlas (COO)</h4>
+              <h4>Kabir (COO)</h4>
               <p>Builds supply chain logistics, fulfillment pipelines, vendor SLA contracts, and Standard Operating Procedures (SOPs).</p>
             </div>
           </div>
 
-          <!-- Athena Research -->
+          <!-- Vidya Research -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="microscope"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Market Intelligence</span>
-              <h4>Athena (R&D)</h4>
+              <h4>Vidya (R&D)</h4>
               <p>Gathers empirical competitive intelligence, TAM/SAM/SOM market sizing, customer persona sentiment, and web research data.</p>
             </div>
           </div>
 
-          <!-- Vigil Security -->
+          <!-- Dhruv Security -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="shield-check"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Security & Compliance</span>
-              <h4>Vigil (CISO)</h4>
+              <h4>Dhruv (CISO)</h4>
               <p>Audits software threat surfaces (STRIDE), PCI-DSS/GDPR compliance, credential leak detection, and gates consequential external actions.</p>
             </div>
           </div>
 
-          <!-- Forge Infrastructure -->
+          <!-- Aakash Infrastructure -->
           <div class="agent-showcase-card">
             <div class="agent-avatar-wrap"><i data-lucide="server"></i></div>
             <div class="agent-card-info">
               <span class="agent-dept">Platform & DevOps</span>
-              <h4>Forge (Infra)</h4>
+              <h4>Aakash (DevOps)</h4>
               <p>Architects cloud serverless topologies, Docker containerization, CI/CD pipelines, and PyGithub repository operations.</p>
             </div>
           </div>
@@ -222,25 +224,135 @@
           <div class="dag-step-box">
             <div class="dag-step-badge">Phase 1</div>
             <h4>Executive Directive</h4>
-            <p>CEO Nova receives high-level prompt, extracts constraints (budget, timeline), and generates a structured subtask DAG.</p>
+            <p>CEO Vikram receives high-level prompt, extracts constraints (budget, timeline), and generates a structured subtask DAG.</p>
           </div>
           <div class="dag-connector">&rarr;</div>
           <div class="dag-step-box">
             <div class="dag-step-badge">Phase 2</div>
             <h4>Parallel Department Execution</h4>
-            <p>Athena conducts market research &rarr; Chloe formulates GTM &rarr; Sterling models unit economics with zero-deficit budget allocation.</p>
+            <p>Vidya conducts market research &rarr; Kavya formulates GTM &rarr; Aditya models unit economics with zero-deficit budget allocation.</p>
           </div>
           <div class="dag-connector">&rarr;</div>
           <div class="dag-step-box">
             <div class="dag-step-badge">Phase 3</div>
             <h4>CEO Critique & Review Loop</h4>
-            <p>Nova assesses output depth and numerical accuracy. If metrics or detail fall below standard, revisions are enforced.</p>
+            <p>Vikram assesses output depth and numerical accuracy. If metrics or detail fall below standard, revisions are enforced.</p>
           </div>
           <div class="dag-connector">&rarr;</div>
           <div class="dag-step-box">
             <div class="dag-step-badge">Phase 4</div>
             <h4>Consolidated Strategy</h4>
             <p>Executive strategy is finalized, broadcast to dashboard via WebSockets, and indexed into ChromaDB vector memory.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Live Product Console Preview Section -->
+      <section class="console-preview-section" id="landing-preview">
+        <div class="section-header-center">
+          <span class="section-tag">INTERACTIVE PRODUCT TRIAL</span>
+          <h2 class="section-heading">Live Autonomous Console Preview</h2>
+          <p class="section-desc">Inspect real executive orchestration payloads, departmental outputs, and vector recall directly in this interactive preview.</p>
+        </div>
+
+        <div class="console-preview-card">
+          <div class="console-preview-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="status-dot online"></span>
+              <span style="font-size:12px; font-weight:600; color:var(--text-primary);">Simulation Engine: ₹50,000 D2C Apparel Launch</span>
+            </div>
+            <div class="console-tab-buttons" id="console-preview-tabs">
+              <button class="console-tab-btn active" data-tab="tab-plan">1. CEO Directive</button>
+              <button class="console-tab-btn" data-tab="tab-tasks">2. Department DAG</button>
+              <button class="console-tab-btn" data-tab="tab-decision">3. Executive Synthesis</button>
+              <button class="console-tab-btn" data-tab="tab-memory">4. Vector Memory</button>
+            </div>
+          </div>
+
+          <div class="console-preview-content">
+            <!-- Tab 1: Directive Plan -->
+            <div class="console-tab-panel active" id="preview-tab-plan">
+              <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:16px; margin-bottom:14px;">
+                <span style="font-size:11px; font-family:var(--font-mono); color:var(--accent); font-weight:600; text-transform:uppercase;">Input Objective</span>
+                <p style="font-size:13.5px; font-weight:600; color:var(--text-primary); margin-top:4px;">
+                  "Create a comprehensive go-to-market and operational strategy for a new streetwear clothing brand with a budget of ₹50,000."
+                </p>
+              </div>
+              <div style="font-size:12.5px; line-height:1.6; color:var(--text-secondary);">
+                <p><strong style="color:var(--text-primary);">CEO Vikram Decomposition:</strong> Objective identified with explicit capital constraint (₹50,000). Formulated 4 coordinated workstreams across Market Intelligence (Vidya), GTM Marketing (Kavya), Capital Allocation (Aditya), and Supply Chain Operations (Kabir).</p>
+                <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+                  <span class="nav-badge" style="background:#f4f4f5; color:var(--text-primary);">Subtasks: 4</span>
+                  <span class="nav-badge" style="background:var(--accent-subtle); color:var(--accent);">Execution Mode: Parallel DAG</span>
+                  <span class="nav-badge" style="background:var(--success-bg); color:var(--success);">Inference Latency: 0.9s</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 2: Department DAG -->
+            <div class="console-tab-panel" id="preview-tab-tasks">
+              <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-weight:600; font-size:11px; color:var(--accent);">RESEARCH</span>
+                    <span class="agent-status-badge status-idle">Finalized</span>
+                  </div>
+                  <div style="font-weight:600; font-size:12.5px; color:var(--text-primary); margin-bottom:4px;">Gen-Z Streetwear Sizing</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">TAM: ₹1,200 Cr in Tier 1 cities. Target ICP: 18-26 age group preferring oversized heavyweight cotton.</div>
+                </div>
+
+                <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-weight:600; font-size:11px; color:var(--accent);">MARKETING</span>
+                    <span class="agent-status-badge status-idle">Finalized</span>
+                  </div>
+                  <div style="font-weight:600; font-size:12.5px; color:var(--text-primary); margin-bottom:4px;">Micro-Creator Seeding</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Kavya: 15 barter creator gifting packs + ₹12,000 Meta Spark Ads. Target Blended CAC: ₹240.</div>
+                </div>
+
+                <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-weight:600; font-size:11px; color:var(--accent);">FINANCE</span>
+                    <span class="agent-status-badge status-idle">Finalized</span>
+                  </div>
+                  <div style="font-weight:600; font-size:12.5px; color:var(--text-primary); margin-bottom:4px;">Zero-Deficit Budget</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Aditya: Production ₹22,000 (100 units @ ₹220), Marketing ₹15,000, Ops/Ship ₹8,000, Buffer ₹5,000. Total = ₹50,000.</div>
+                </div>
+
+                <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-weight:600; font-size:11px; color:var(--accent);">OPERATIONS</span>
+                    <span class="agent-status-badge status-idle">Finalized</span>
+                  </div>
+                  <div style="font-weight:600; font-size:12.5px; color:var(--text-primary); margin-bottom:4px;">Sourcing & Courier SLA</div>
+                  <div style="font-size:11.5px; color:var(--text-secondary);">Kabir: Tirupur supplier verified. Delhivery API integration with 48h dispatch SLA and polybag branding.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Executive Synthesis -->
+            <div class="console-tab-panel" id="preview-tab-decision">
+              <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; color:var(--text-primary);">
+                  <i data-lucide="crown" style="width:16px; height:16px;"></i>
+                  <span style="font-size:13px; font-weight:700;">CEO Vikram Strategic Synthesis & Executive Decision</span>
+                </div>
+                <div style="font-size:12.5px; line-height:1.6; color:var(--text-secondary);">
+                  <p><strong style="color:var(--text-primary);">Commercial Thesis:</strong> Validated. A pilot batch of 100 units priced at ₹899 yields ₹89,900 gross revenue against ₹50,000 outlay (+79.8% gross return). Operating breakeven reached at 56 units sold.</p>
+                  <p style="margin-top:6px;"><strong style="color:var(--text-primary);">Next Authorized Action:</strong> Operator approval required for initial Tirupur fabric purchase order (PO #8492).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 4: Vector Memory -->
+            <div class="console-tab-panel" id="preview-tab-memory">
+              <div style="background:#fafafa; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:16px;">
+                <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted); text-transform:uppercase;">ChromaDB Semantic Query: "D2C Clothing Unit Economics"</span>
+                <div style="margin-top:8px; font-size:12px; font-family:var(--font-mono); background:#ffffff; border:1px solid var(--border-subtle); border-radius:var(--radius-xs); padding:12px; color:var(--text-primary);">
+                  {"similarity_score": 0.94, "document_id": "doc-apparel-50k", "metadata": {"budget": "₹50000", "cac_target": "₹240", "breakeven_units": 56, "timestamp": "2026-11-07T03:55:00Z"}}
+                </div>
+                <p style="font-size:12px; color:var(--text-secondary); margin-top:8px;">Instant recall available for all future executive decision-making without re-inferring.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -256,7 +368,7 @@
           <div class="landing-feature-card">
             <div class="feature-icon-wrap"><i data-lucide="bot"></i></div>
             <h3>CEO AI Conversational Hub</h3>
-            <p>Chat directly with CEO Nova to mobilize complex business operations, ask strategic questions, and inspect live workflow execution telemetry.</p>
+            <p>Chat directly with CEO Vikram to mobilize complex business operations, ask strategic questions, and inspect live workflow execution telemetry.</p>
           </div>
 
           <div class="landing-feature-card">
@@ -286,8 +398,8 @@
           <p>Access the boardroom immediately with zero email confirmation barrier.</p>
           <div class="bottom-cta-buttons">
             <button class="btn btn-primary btn-lg" id="landing-bottom-signup-btn">
-              <i data-lucide="sparkles"></i>
-              <span>Create Account — Free & Instant</span>
+              <i data-lucide="arrow-right"></i>
+              <span>Create Account: Free & Instant</span>
             </button>
             <button class="btn btn-secondary btn-lg" id="landing-bottom-signin-btn">
               <i data-lucide="log-in"></i>
@@ -300,10 +412,12 @@
 
     <!-- Landing Footer -->
     <footer class="landing-footer">
-      <span>AI ECOSYSTEM &copy; 2026 — Multi-Agent Enterprise Business Operating System</span>
+      <span>AI ECOSYSTEM &copy; 2026: Multi-Agent Enterprise Business Operating System</span>
       <div class="landing-footer-actions">
         <button class="btn btn-ghost btn-xs" id="landing-footer-signin-btn">Sign In</button>
         <button class="btn btn-ghost btn-xs" id="landing-footer-signup-btn">Sign Up</button>
+        <button class="btn btn-ghost btn-xs" id="btn-terms-modal">Terms of Service</button>
+        <button class="btn btn-ghost btn-xs" id="btn-privacy-modal">Privacy Policy</button>
       </div>
       <span class="landing-footer-tag">Production Ready • Supabase Auth • Groq LPU Powered</span>
     </footer>
@@ -418,7 +532,7 @@
             <span>New Task</span>
           </button>
           <button class="btn btn-primary btn-sm" id="btn-quick-workflow" title="Launch CEO multi-agent workflow">
-            <i data-lucide="sparkles"></i>
+            <i data-lucide="layers"></i>
             <span>New Workflow</span>
           </button>
           <div class="topbar-divider"></div>
@@ -534,14 +648,14 @@
           <div class="form-group">
             <label for="task-agent-select">Assign Department Agent *</label>
             <select id="task-agent-select" required>
-              <option value="research">Athena — Research & Market Intel</option>
-              <option value="marketing">Chloe — Marketing & Growth</option>
-              <option value="finance">Sterling — Finance & Budgeting</option>
-              <option value="operations">Atlas — Operations & Logistics</option>
-              <option value="security">Vigil — Security & Risk Audit</option>
-              <option value="infrastructure">Forge — DevOps & Cloud Platform</option>
-              <option value="hr">Marcus — HR & People Strategy</option>
-              <option value="ceo">Nova — CEO Executive</option>
+              <option value="research">Vidya: Research & Market Intel</option>
+              <option value="marketing">Kavya: Marketing & Growth</option>
+              <option value="finance">Aditya: Finance & Budgeting</option>
+              <option value="operations">Kabir: Operations & Logistics</option>
+              <option value="security">Dhruv: Security & Risk Audit</option>
+              <option value="infrastructure">Aakash: DevOps & Cloud Platform</option>
+              <option value="hr">Manav: HR & People Strategy</option>
+              <option value="ceo">Vikram: CEO Executive</option>
             </select>
           </div>
           <div class="form-group">
@@ -580,7 +694,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-title-wrap">
-          <i data-lucide="sparkles" class="modal-icon text-accent"></i>
+          <i data-lucide="layers" class="modal-icon text-accent"></i>
           <h3>Orchestrate Multi-Agent Workflow</h3>
         </div>
         <button class="icon-btn" id="btn-close-workflow-modal">
@@ -669,11 +783,93 @@
 
         <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); text-align: center;">
           <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-demo-login" style="width: 100%; justify-content: center; gap: 6px; font-weight: 600;">
-            <i data-lucide="zap" style="color: var(--accent); width: 14px; height: 14px;"></i>
-            <span>⚡ One-Click Demo Sign In (Executive Admin)</span>
+            <i data-lucide="play" style="color: var(--accent); width: 14px; height: 14px;"></i>
+            <span>One-Click Demo Sign In (Executive Admin)</span>
           </button>
         </div>
       </form>
+    </div>
+  </dialog>
+
+  <!-- Terms of Service Modal Dialog -->
+  <dialog class="modal-dialog modal-lg" id="modal-terms">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="file-text" class="modal-icon text-accent"></i>
+          <div>
+            <h3>Enterprise Terms of Service</h3>
+            <p class="auth-subtitle">AI ECOSYSTEM Multi-Agent Platform Agreement</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-close-terms-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="legal-modal-body">
+        <section class="legal-section">
+          <h4>1. Acceptance of Terms</h4>
+          <p>By accessing or interacting with the AI ECOSYSTEM platform ("Platform"), you agree to abide by these Terms of Service. If you are using the Platform on behalf of an enterprise or organization, you confirm you possess the authorization to bind that entity to these terms.</p>
+        </section>
+        <section class="legal-section">
+          <h4>2. Multi-Agent Orchestration & Governance</h4>
+          <p>The Platform provides multi-agent business operations orchestrated by autonomous executive agents (Vikram, Kavya, Aditya, Manav, Kabir, Vidya, Dhruv, and Aakash). While agents execute analytical and generative workflows, actions configured with Human-In-The-Loop approval require explicit authorized confirmation prior to state transitions.</p>
+        </section>
+        <section class="legal-section">
+          <h4>3. Permissible Use & Enterprise Compliance</h4>
+          <p>Users must utilize the Platform solely for lawful business operations. Any attempt to introduce malicious payloads, reverse engineer private vector embeddings, circumvent rate controls, or deploy automated attacks against telemetry pipelines constitutes immediate grounds for session termination.</p>
+        </section>
+        <section class="legal-section">
+          <h4>4. Intellectual Property & Corporate Outputs</h4>
+          <p>All strategies, synthesis documents, campaign roadmaps, financial allocations, and research reports generated via your organization's authorized sessions remain your proprietary business assets. AI ECOSYSTEM does not claim ownership over corporate outputs produced through your directives.</p>
+        </section>
+        <section class="legal-section">
+          <h4>5. Limitation of Liability</h4>
+          <p>Autonomous AI agents synthesize advisory data based on neural inference and vector retrieval. While the platform achieves high precision, outputs are provided on an "as-is" basis and should be reviewed by qualified personnel before initiating irreversible legal, financial, or engineering commitments.</p>
+        </section>
+      </div>
+      <div class="modal-actions" style="margin-top: 20px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="btn-close-terms-footer">Close Terms</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Privacy Policy Modal Dialog -->
+  <dialog class="modal-dialog modal-lg" id="modal-privacy">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i data-lucide="shield" class="modal-icon text-accent"></i>
+          <div>
+            <h3>Enterprise Privacy Policy</h3>
+            <p class="auth-subtitle">Data Governance, Telemetry & Retention Standards</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="btn-close-privacy-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="legal-modal-body">
+        <section class="legal-section">
+          <h4>1. Information Collection & Authentication</h4>
+          <p>We process authentication credentials (usernames, authorized emails, session tokens) securely via enterprise Supabase infrastructure. We do not store plain-text passwords or share identity tokens with third-party advertising networks.</p>
+        </section>
+        <section class="legal-section">
+          <h4>2. Telemetry, Prompts & Vector Memory</h4>
+          <p>Corporate objectives, agent task directives, and execution artifacts are processed via Groq high-speed LPU inference and indexed within isolated vector memory stores. Your data is strictly segmented and is never repurposed to train public foundation models.</p>
+        </section>
+        <section class="legal-section">
+          <h4>3. Data Security & Encryption</h4>
+          <p>All network traffic is encrypted in transit using TLS 1.3. Relational operational state and vector indexes are stored with role-based access restrictions, ensuring only authenticated team members can access department deliverables and audit logs.</p>
+        </section>
+        <section class="legal-section">
+          <h4>4. Auditability & Data Deletion</h4>
+          <p>Organizational administrators can inspect full activity logs, export execution records, and purge conversation vectors or task histories at any point via the system settings and memory HUD interfaces.</p>
+        </section>
+      </div>
+      <div class="modal-actions" style="margin-top: 20px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="btn-close-privacy-footer">Close Policy</button>
+      </div>
     </div>
   </dialog>
 

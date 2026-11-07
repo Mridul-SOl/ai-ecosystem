@@ -40,7 +40,7 @@ async def chat_with_ceo(
         wf = await ceo_orchestrator.orchestrate_objective(objective=msg)
         created_workflow_id = wf.id
 
-        # Generate intelligent executive appraisal from CEO Nova via LLM
+        # Generate intelligent executive appraisal from CEO Vikram via LLM
         from backend.ai.llm_provider import get_llm_provider
         llm = get_llm_provider()
 
@@ -52,7 +52,7 @@ async def chat_with_ceo(
         executive_prompt = f"""The operator has issued the following business objective:
 "{msg}"
 
-As CEO Nova, I have decomposed this objective into {wf.total_steps} cross-departmental tasks:
+As CEO Vikram, I have decomposed this objective into {wf.total_steps} cross-departmental tasks:
 {steps_summary}
 Workflow ID: `{wf.id}`
 

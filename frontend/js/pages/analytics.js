@@ -31,7 +31,7 @@ export async function renderAnalytics(container) {
             <span class="kpi-value" id="an-success-rate">100%</span>
             <span class="kpi-delta" style="color:var(--success);">Zero system crash</span>
           </div>
-          <div class="kpi-icon"><i data-lucide="zap"></i></div>
+          <div class="kpi-icon"><i data-lucide="gauge"></i></div>
         </div>
         <div class="kpi-card">
           <div class="kpi-info">
@@ -82,7 +82,9 @@ export async function renderAnalytics(container) {
               </tr>
             </thead>
             <tbody id="an-agents-table-body">
-              <tr><td colspan="5" style="padding:12px; color:var(--text-muted);">Loading telemetry...</td></tr>
+              <tr><td colspan="5" style="padding:12px;"><div class="skeleton-text" style="height: 18px;"></div></td></tr>
+              <tr><td colspan="5" style="padding:12px;"><div class="skeleton-text" style="height: 18px;"></div></td></tr>
+              <tr><td colspan="5" style="padding:12px;"><div class="skeleton-text" style="height: 18px;"></div></td></tr>
             </tbody>
           </table>
         </div>

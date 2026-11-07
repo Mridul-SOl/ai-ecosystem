@@ -12,14 +12,14 @@ async def test_groq_resilient_fallback():
     failing_groq = GroqProvider(api_key="gsk_invalid_test_key_for_offline_simulation")
 
     response = await failing_groq.generate_response(
-        system_prompt="You are CEO Nova.",
+        system_prompt="You are CEO Vikram.",
         user_prompt="Provide a brief strategic overview for launch."
     )
     assert response is not None
     assert len(response) > 50
 
     json_res = await failing_groq.generate_json(
-        system_prompt="You are CEO Nova.",
+        system_prompt="You are CEO Vikram.",
         user_prompt="Provide structured breakdown."
     )
     assert isinstance(json_res, dict)

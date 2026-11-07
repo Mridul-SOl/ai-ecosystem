@@ -8,7 +8,7 @@ const TECH_FUNNY_QUOTES = [
   "Calculating cross-departmental synergy coefficients to the 12th decimal...",
   "Drafting a 40-page memo that could have been a 3-word email...",
   "Optimizing corporate vibe metrics for maximum enterprise valuation...",
-  "Briefing Athena (Research) & Chloe (Marketing) in the war room...",
+  "Briefing Vidya (Research) & Kavya (Marketing) in the war room...",
   "Allocating speculative cloud budgets before Finance notices...",
   "Calibrating organizational karma and cross-functional alignment...",
   "Overclocking LPUs to synthesize executive wisdom...",
@@ -27,11 +27,11 @@ export async function renderChat(container) {
         <!-- Chat Header -->
         <div class="chat-header">
           <div class="chat-partner">
-            <div class="agent-avatar" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); width:40px; height:40px; color:#fff;">
+            <div class="agent-avatar" style="background: var(--accent); width:40px; height:40px; color:#fff; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
               <i data-lucide="crown" style="width:20px; height:20px;"></i>
             </div>
             <div>
-              <div style="font-weight:700; font-size:14.5px; color:var(--text-primary);">Nova (CEO Orchestrator)</div>
+              <div style="font-weight:700; font-size:14.5px; color:var(--text-primary);">Vikram (CEO Orchestrator)</div>
               <div style="font-size:11.5px; color:var(--text-muted);">Autonomous Business Operating System & Multi-Agent Dispatcher</div>
             </div>
           </div>
@@ -49,10 +49,10 @@ export async function renderChat(container) {
             <div class="msg-avatar"><i data-lucide="crown"></i></div>
             <div class="msg-bubble">
               <p style="font-size:14.5px; font-weight:600; margin-bottom:4px;">Welcome to AI ECOSYSTEM Executive Terminal.</p>
-              <p>I am <strong>Nova</strong>, your Chief Executive Officer orchestrator. Instruct me on any corporate objective, market opportunity, or strategic directive.</p>
+              <p>I am <strong>Vikram</strong>, your Chief Executive Officer orchestrator. Instruct me on any corporate objective, market opportunity, or strategic directive.</p>
               <p style="margin-top:8px; font-size:13px; color:var(--text-secondary);">
                 When you initiate a directive, I will break it down into specialized departmental tasks across 
-                <strong>Athena (Research)</strong>, <strong>Chloe (Marketing)</strong>, <strong>Sterling (Finance)</strong>, and <strong>Atlas (Operations)</strong>, 
+                <strong>Vidya (Research)</strong>, <strong>Kavya (Marketing)</strong>, <strong>Aditya (Finance)</strong>, and <strong>Kabir (Operations)</strong>, 
                 and synthesize a consolidated decision report.
               </p>
             </div>
@@ -79,7 +79,7 @@ export async function renderChat(container) {
             class="chat-textarea"
             id="chat-input-box"
             rows="1"
-            placeholder="Instruct CEO Nova (e.g., 'Formulate a growth strategy for a B2B SaaS startup...')"
+            placeholder="Instruct CEO Vikram (e.g., 'Formulate a growth strategy for a B2B SaaS startup...')"
           ></textarea>
           <button class="btn btn-primary" id="btn-chat-send" style="height:48px; width:48px; padding:0; border-radius:var(--radius-md);">
             <i data-lucide="send"></i>
@@ -149,7 +149,7 @@ export async function renderChat(container) {
         <div class="telemetry-hud">
           <div class="telemetry-header">
             <div class="telemetry-status-group">
-              <span class="telemetry-radar-beacon"></span>
+              <span class="status-dot online"></span>
               <span>[GROQ LPU // 120B NEURAL ENGINE // INFERRING]</span>
             </div>
             <span class="telemetry-timer" id="hud-timer">Elapsed: 0.0s</span>

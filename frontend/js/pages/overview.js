@@ -13,7 +13,7 @@ export async function renderOverview(container) {
             <i data-lucide="refresh-cw"></i> Refresh
           </button>
           <button class="btn btn-primary btn-sm" id="btn-ov-workflow">
-            <i data-lucide="sparkles"></i> Launch Directive
+            <i data-lucide="plus"></i> Launch Directive
           </button>
         </div>
       </div>
@@ -61,7 +61,10 @@ export async function renderOverview(container) {
           <a href="#agents" style="color: var(--accent); font-size: 12px; text-decoration:none;">View All 8 Agents &rarr;</a>
         </div>
         <div class="agent-grid" id="ov-agents-grid">
-          <!-- Injected dynamically -->
+          <div class="skeleton-card" style="height: 170px;"></div>
+          <div class="skeleton-card" style="height: 170px;"></div>
+          <div class="skeleton-card" style="height: 170px;"></div>
+          <div class="skeleton-card" style="height: 170px;"></div>
         </div>
       </div>
 
@@ -76,7 +79,8 @@ export async function renderOverview(container) {
             <a href="#workflows" style="color: var(--accent); font-size: 12px; text-decoration: none;">View Workflows &rarr;</a>
           </div>
           <div id="ov-workflows-list" style="display:flex; flex-direction:column; gap:12px; margin-top:14px;">
-            <div style="color:var(--text-muted); font-size:12px;">Loading recent workflows...</div>
+            <div class="skeleton-card" style="height: 70px;"></div>
+            <div class="skeleton-card" style="height: 70px;"></div>
           </div>
         </div>
 
@@ -89,7 +93,9 @@ export async function renderOverview(container) {
             <a href="#logs" style="color: var(--accent); font-size: 12px; text-decoration: none;">All Logs &rarr;</a>
           </div>
           <div id="ov-activity-feed" style="display:flex; flex-direction:column; gap:8px; margin-top:14px; max-height: 280px; overflow-y:auto;">
-            <div style="color:var(--text-muted); font-size:12px;">Connecting to telemetry stream...</div>
+            <div class="skeleton-text" style="height: 18px;"></div>
+            <div class="skeleton-text" style="height: 18px;"></div>
+            <div class="skeleton-text" style="height: 18px;"></div>
           </div>
         </div>
       </div>

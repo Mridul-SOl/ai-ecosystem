@@ -34,7 +34,9 @@ export async function renderTasks(container) {
             <span class="kanban-title"><i data-lucide="clock" style="color:var(--text-muted); width:14px;"></i> Pending</span>
             <span class="kanban-count" id="count-pending">0</span>
           </div>
-          <div class="kanban-cards-wrap" id="col-pending"></div>
+          <div class="kanban-cards-wrap" id="col-pending">
+            <div class="skeleton-card" style="height: 75px;"></div>
+          </div>
         </div>
 
         <!-- 2. Running -->
@@ -43,7 +45,9 @@ export async function renderTasks(container) {
             <span class="kanban-title"><i data-lucide="play" style="color:var(--info); width:14px;"></i> Running</span>
             <span class="kanban-count" id="count-running">0</span>
           </div>
-          <div class="kanban-cards-wrap" id="col-running"></div>
+          <div class="kanban-cards-wrap" id="col-running">
+            <div class="skeleton-card" style="height: 75px;"></div>
+          </div>
         </div>
 
         <!-- 3. Awaiting Approval -->
@@ -52,7 +56,9 @@ export async function renderTasks(container) {
             <span class="kanban-title"><i data-lucide="shield-alert" style="color:var(--warning); width:14px;"></i> Awaiting Approval</span>
             <span class="kanban-count" id="count-approval" style="background:var(--warning-bg); color:var(--warning);">0</span>
           </div>
-          <div class="kanban-cards-wrap" id="col-approval"></div>
+          <div class="kanban-cards-wrap" id="col-approval">
+            <div class="skeleton-card" style="height: 75px;"></div>
+          </div>
         </div>
 
         <!-- 4. Completed -->
@@ -61,7 +67,9 @@ export async function renderTasks(container) {
             <span class="kanban-title"><i data-lucide="check-circle" style="color:var(--success); width:14px;"></i> Completed</span>
             <span class="kanban-count" id="count-completed">0</span>
           </div>
-          <div class="kanban-cards-wrap" id="col-completed"></div>
+          <div class="kanban-cards-wrap" id="col-completed">
+            <div class="skeleton-card" style="height: 75px;"></div>
+          </div>
         </div>
 
         <!-- 5. Failed / Cancelled -->
@@ -70,7 +78,9 @@ export async function renderTasks(container) {
             <span class="kanban-title"><i data-lucide="alert-octagon" style="color:var(--error); width:14px;"></i> Failed / Cancelled</span>
             <span class="kanban-count" id="count-failed">0</span>
           </div>
-          <div class="kanban-cards-wrap" id="col-failed"></div>
+          <div class="kanban-cards-wrap" id="col-failed">
+            <div class="skeleton-card" style="height: 75px;"></div>
+          </div>
         </div>
       </div>
     </div>

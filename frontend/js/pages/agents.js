@@ -17,7 +17,10 @@ export async function renderAgents(container) {
 
       <!-- 8 Agents Grid -->
       <div class="agent-grid" id="full-agents-grid">
-        <div style="color:var(--text-muted); font-size:13px;">Loading department agents...</div>
+        <div class="skeleton-card" style="height: 220px;"></div>
+        <div class="skeleton-card" style="height: 220px;"></div>
+        <div class="skeleton-card" style="height: 220px;"></div>
+        <div class="skeleton-card" style="height: 220px;"></div>
       </div>
     </div>
   `;
