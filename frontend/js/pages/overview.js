@@ -162,7 +162,7 @@ async function loadOverviewData(container) {
           return `
             <div style="background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:12px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <span style="font-weight:600; font-size:13px; color:#fff;">${wf.title}</span>
+                <span style="font-weight:600; font-size:13px; color:var(--text-primary);">${wf.title}</span>
                 <span class="agent-status-badge status-${wf.status === 'Completed' ? 'idle' : 'busy'}">${wf.status}</span>
               </div>
               <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">${wf.objective}</div>

@@ -54,13 +54,13 @@ export async function renderAnalytics(container) {
       <!-- Interactive Charts Row -->
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:24px;">
         <div class="workflow-card">
-          <h3 style="font-size:14px; font-weight:600; color:#fff; margin-bottom:14px;">Workload by Department</h3>
+          <h3 style="font-size:14px; font-weight:600; color:var(--text-primary); margin-bottom:14px;">Workload by Department</h3>
           <div style="position:relative; height:240px; display:flex; align-items:center; justify-content:center;">
             <canvas id="chart-departments"></canvas>
           </div>
         </div>
         <div class="workflow-card">
-          <h3 style="font-size:14px; font-weight:600; color:#fff; margin-bottom:14px;">Agent Task Completion</h3>
+          <h3 style="font-size:14px; font-weight:600; color:var(--text-primary); margin-bottom:14px;">Agent Task Completion</h3>
           <div style="position:relative; height:240px;">
             <canvas id="chart-agents"></canvas>
           </div>
@@ -69,7 +69,7 @@ export async function renderAnalytics(container) {
 
       <!-- Department Leaderboard Table -->
       <div class="workflow-card">
-        <h3 style="font-size:14px; font-weight:600; color:#fff; margin-bottom:14px;">Department Productivity Matrix</h3>
+        <h3 style="font-size:14px; font-weight:600; color:var(--text-primary); margin-bottom:14px;">Department Productivity Matrix</h3>
         <div style="overflow-x:auto;">
           <table style="width:100%; border-collapse:collapse; font-size:12.5px; text-align:left;">
             <thead>
@@ -111,7 +111,7 @@ async function loadAnalytics(container) {
     if (tbody) {
       tbody.innerHTML = (data.agent_stats || []).map(a => `
         <tr style="border-bottom:1px solid var(--border-subtle);">
-          <td style="padding:10px 12px; font-weight:600; color:#fff;">${a.name}</td>
+          <td style="padding:10px 12px; font-weight:600; color:var(--text-primary);">${a.name}</td>
           <td style="padding:10px 12px; color:var(--text-secondary);">${a.department}</td>
           <td style="padding:10px 12px;"><span class="agent-status-badge status-${a.status}">${a.status}</span></td>
           <td style="padding:10px 12px; font-weight:600; color:var(--success);">${a.tasks_completed}</td>

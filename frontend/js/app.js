@@ -352,7 +352,7 @@ function initAgentDrawer() {
       if (tasksList) {
         tasksList.innerHTML = (history.tasks || []).map((t) => `
           <div style="background:var(--bg-elevated); border:1px solid var(--border-subtle); padding:10px; border-radius:var(--radius-sm); margin-bottom:8px;">
-            <div style="font-weight:600; font-size:12px; color:#fff;">${t.title}</div>
+            <div style="font-weight:600; font-size:12px; color:var(--text-primary);">${t.title}</div>
             <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-top:4px;">
               <span>Status: <strong style="color:var(--text-primary);">${t.status}</strong></span>
               <span>Priority: ${t.priority}</span>
@@ -581,6 +581,39 @@ function initAuthUI() {
     document.getElementById(id)?.addEventListener('click', (e) => {
       e.preventDefault();
       openAuthModal('signup');
+    });
+  });
+
+  // One-Click Demo Login Handlers
+  async function triggerDemoLogin() {
+    try {
+      realtime.showToast('Demo Access', 'Signing in as Executive Administrator...', 'info');
+      const result = await authService.signIn('admin@aiecosystem.internal', 'admin123456');
+      modalAuth?.close();
+      updateUIForUser(result.user);
+      realtime.showToast('Authorized', 'Welcome to AI ECOSYSTEM Executive Terminal!', 'success');
+      window.location.hash = '#overview';
+    } catch (err) {
+      alert(`Demo login error: ${err.message}`);
+    }
+  }
+
+  document.getElementById('landing-hero-demo-btn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    triggerDemoLogin();
+  });
+
+  document.getElementById('btn-modal-demo-login')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    triggerDemoLogin();
+  });
+
+  // Safe backdrop click closing (clicking dialog itself closes, clicking inside modal-card does not)
+  document.querySelectorAll('dialog.modal-dialog').forEach(dialog => {
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+      }
     });
   });
 

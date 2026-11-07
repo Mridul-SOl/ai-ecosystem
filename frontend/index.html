@@ -84,6 +84,10 @@
             <i data-lucide="log-in"></i>
             <span>Sign In to Console</span>
           </button>
+          <button class="btn btn-secondary btn-lg landing-hero-cta" id="landing-hero-demo-btn" style="border: 1px dashed var(--accent); color: var(--accent); font-weight: 600;">
+            <i data-lucide="zap"></i>
+            <span>⚡ One-Click Demo</span>
+          </button>
         </div>
 
         <div class="landing-trust-bar">
@@ -510,7 +514,7 @@
   </aside>
 
   <!-- Create Task Dialog Modal -->
-  <dialog class="modal-dialog" id="modal-create-task" closedby="any">
+  <dialog class="modal-dialog" id="modal-create-task">
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-title-wrap">
@@ -572,7 +576,7 @@
   </dialog>
 
   <!-- Create Workflow Dialog Modal -->
-  <dialog class="modal-dialog" id="modal-create-workflow" closedby="any">
+  <dialog class="modal-dialog" id="modal-create-workflow">
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-title-wrap">
@@ -613,7 +617,7 @@
   </dialog>
 
   <!-- Supabase Auth Modal Dialog -->
-  <dialog class="modal-dialog" id="modal-auth" closedby="any">
+  <dialog class="modal-dialog" id="modal-auth">
     <div class="modal-card auth-modal-card">
       <div class="modal-header">
         <div class="modal-title-wrap">
@@ -643,8 +647,8 @@
         </div>
 
         <div class="form-group">
-          <label for="auth-email">Email Address *</label>
-          <input type="email" id="auth-email" required placeholder="name@company.com" autocomplete="email" />
+          <label for="auth-email">Email Address or Username *</label>
+          <input type="text" id="auth-email" required placeholder="name@company.com or username" autocomplete="username" />
         </div>
 
         <div class="form-group">
@@ -662,12 +666,19 @@
             <span id="btn-auth-label">Sign In</span>
           </button>
         </div>
+
+        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); text-align: center;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-modal-demo-login" style="width: 100%; justify-content: center; gap: 6px; font-weight: 600;">
+            <i data-lucide="zap" style="color: var(--accent); width: 14px; height: 14px;"></i>
+            <span>⚡ One-Click Demo Sign In (Executive Admin)</span>
+          </button>
+        </div>
       </form>
     </div>
   </dialog>
 
   <!-- Task Detail Inspection Modal -->
-  <dialog class="modal-dialog" id="modal-task-detail" closedby="any">
+  <dialog class="modal-dialog" id="modal-task-detail">
     <div class="modal-card" style="max-width: 680px;" id="task-detail-content">
       <!-- Injected by tasks.js openTaskDetailModal -->
     </div>

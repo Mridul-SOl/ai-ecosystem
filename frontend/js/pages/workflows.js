@@ -43,7 +43,7 @@ async function loadWorkflows(container) {
       list.innerHTML = `
         <div style="background:var(--bg-card); border:1px dashed var(--border-medium); border-radius:var(--radius-lg); padding:40px; text-align:center;">
           <i data-lucide="git-merge" style="width:36px; height:36px; color:var(--text-muted); margin-bottom:12px;"></i>
-          <h3 style="color:#fff; font-size:15px; margin-bottom:6px;">No Corporate Workflows Yet</h3>
+          <h3 style="color:var(--text-primary); font-size:15px; margin-bottom:6px;">No Corporate Workflows Yet</h3>
           <p style="color:var(--text-secondary); font-size:13px; max-width:440px; margin:0 auto 16px auto;">
             Give CEO Agent Nova a high-level corporate objective (e.g., launch a clothing brand with a ₹50,000 budget), and watch the system coordinate all 8 departments autonomously.
           </p>
@@ -114,7 +114,7 @@ async function loadWorkflows(container) {
             <div style="margin-top:20px; background:var(--bg-elevated); border:1px solid var(--border-medium); border-radius:var(--radius-md); padding:20px;">
               <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; color:var(--accent);">
                 <i data-lucide="crown" style="width:18px; height:18px;"></i>
-                <h4 style="font-size:14px; font-weight:700; color:#fff;">CEO Executive Synthesis & Actionable Strategy</h4>
+                <h4 style="font-size:14px; font-weight:700; color:var(--text-primary);">CEO Executive Synthesis & Actionable Strategy</h4>
               </div>
               <div style="font-size:13px; line-height:1.6; color:var(--text-primary); max-height:360px; overflow-y:auto; padding-right:8px;">
                 ${parsedSynthesis}

@@ -37,10 +37,19 @@ export const authService = {
       if (session && session.user) {
         const user = await this.syncWithBackend(session);
         if (onAuthChangeCallback) onAuthChangeCallback(user, session);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
         localStorage.removeItem('access_token');
         localStorage.removeItem('current_user');
         if (onAuthChangeCallback) onAuthChangeCallback(null, null);
+      } else {
+        // If Supabase session is null (e.g. INITIAL_SESSION), preserve local auth session
+        const localUser = this.getCurrentUser();
+        const token = localStorage.getItem('access_token');
+        if (localUser && token) {
+          if (onAuthChangeCallback) onAuthChangeCallback(localUser, null);
+        } else {
+          if (onAuthChangeCallback) onAuthChangeCallback(null, null);
+        }
       }
     });
 
@@ -55,9 +64,17 @@ export const authService = {
       if (session && session.user) {
         const user = await this.syncWithBackend(session);
         if (callback) callback(user, session);
+      } else {
+        const localUser = this.getCurrentUser();
+        const token = localStorage.getItem('access_token');
+        if (localUser && token && callback) {
+          callback(localUser, null);
+        }
       }
     } catch (err) {
       console.error('[Supabase Auth] Session check error:', err);
+      const localUser = this.getCurrentUser();
+      if (localUser && callback) callback(localUser, null);
     }
   },
 

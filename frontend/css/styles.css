@@ -1480,6 +1480,9 @@ dialog.modal-dialog {
   width: 90vw;
   margin: auto;
   outline: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
 }
 
 dialog.modal-dialog.modal-lg {
@@ -1493,6 +1496,8 @@ dialog.modal-dialog::backdrop {
 
 dialog.modal-dialog[open] {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-card {

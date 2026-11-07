@@ -24,7 +24,7 @@ export async function renderSettings(container) {
         <div class="workflow-card">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--accent);">
             <i data-lucide="zap" style="width:18px; height:18px; color:#f59e0b;"></i>
-            <h3 style="font-size:15px; font-weight:600; color:#fff;">AI Inference Engine (Groq / OpenAI / Ollama)</h3>
+            <h3 style="font-size:15px; font-weight:600; color:var(--text-primary);">AI Inference Engine (Groq / OpenAI / Ollama)</h3>
           </div>
           <div class="form-row" style="margin-bottom:14px;">
             <div class="form-group">
@@ -69,7 +69,7 @@ export async function renderSettings(container) {
         <div class="workflow-card">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--warning);">
             <i data-lucide="shield-alert" style="width:18px; height:18px;"></i>
-            <h3 style="font-size:15px; font-weight:600; color:#fff;">Human-In-The-Loop Security Policies</h3>
+            <h3 style="font-size:15px; font-weight:600; color:var(--text-primary);">Human-In-The-Loop Security Policies</h3>
           </div>
           <div style="display:flex; flex-direction:column; gap:12px;">
             <label class="checkbox-label" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
@@ -87,7 +87,7 @@ export async function renderSettings(container) {
         <div class="workflow-card">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--info);">
             <i data-lucide="layers" style="width:18px; height:18px;"></i>
-            <h3 style="font-size:15px; font-weight:600; color:#fff;">External Services (PyGithub & SMTP)</h3>
+            <h3 style="font-size:15px; font-weight:600; color:var(--text-primary);">External Services (PyGithub & SMTP)</h3>
           </div>
           <div class="form-group" style="margin-bottom:14px;">
             <label>GitHub Personal Access Token</label>

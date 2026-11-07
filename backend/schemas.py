@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 # User Schemas
 class UserRegister(BaseModel):
-    email: EmailStr
+    email: str
     password: str = Field(..., min_length=6)
     full_name: Optional[str] = None
     role: Optional[str] = "admin"
@@ -15,7 +15,7 @@ class UserLogin(BaseModel):
 
 class SupabaseSyncRequest(BaseModel):
     id: str
-    email: EmailStr
+    email: str
     username: Optional[str] = None
     role: Optional[str] = "member"
     password: Optional[str] = None

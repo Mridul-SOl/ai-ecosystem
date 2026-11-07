@@ -17,7 +17,7 @@ export async function renderMemory(container) {
 
       <!-- Add Knowledge Collapsible Panel -->
       <div id="add-memory-panel" style="display:none; background:var(--bg-card); border:1px solid var(--border-medium); border-radius:var(--radius-md); padding:20px; margin-bottom:20px;">
-        <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:#fff;">Index Document / Strategic Policy</h3>
+        <h3 style="font-size:14px; font-weight:600; margin-bottom:12px; color:var(--text-primary);">Index Document / Strategic Policy</h3>
         <form id="form-add-memory" style="display:flex; flex-direction:column; gap:12px;">
           <div class="form-row">
             <div class="form-group">
